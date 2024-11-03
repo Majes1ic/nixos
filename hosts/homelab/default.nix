@@ -4,6 +4,9 @@
     ../../modules/core
     ../../modules/hardware/networking.nix
     ../../modules/system/virtualisation.nix
+    ../../modules/services/caddy.nix
+    ../../modules/services/jellyfin.nix
+    ../../modules/system/ssh.nix
     # Wireguards needs options for customising
     # ../../modules/programs/wireguard.nix
   ];
