@@ -11,7 +11,7 @@
       # destination IP address is on the same network and if it can be directly
       # communicated with rather than going through the default gateway.
       address = [ "10.0.0.6/24" ];
-      autostart = false;
+      autostart = true;
       privateKeyFile = "/home/${username}/.wireguard/private";
       dns = [ "10.0.0.7" ];
       peers = [
@@ -25,6 +25,7 @@
     };
     wg-home = {
       address = [ "10.0.1.1/24" ];
+
       listenPort = 51820;
       autostart = true;
       privateKeyFile = "/home/${username}/.wireguard/private";
@@ -41,8 +42,14 @@
         }
       ];
     };
+    wg-air = {
+      configFile = "/etc/wireguard/AirVPN_Swiss.conf";
+      autostart = false;
+    };
   };
-  #networking.firewall.allowedUDPPorts = [ 51820 ];
+  networking.firewall.allowedUDPPorts = [ 51820 ];
+  networking.firewall.interfaces.wg-air.allowedTCPPorts = [ 36780 ];
+  networking.firewall.interfaces.wg-air.allowedUDPPorts = [ 36780 ];
 
   programs.zsh = {
     shellAliases = {
