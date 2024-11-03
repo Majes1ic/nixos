@@ -24,7 +24,7 @@ in
 
   environment.systemPackages =
     extensions
-    ++ (with pkgs.gnome; [
+    ++ (with pkgs; [
       dconf-editor
       gnome-tweaks
     ]);
@@ -119,5 +119,5 @@ in
     };
   };
 
-  services.udev.packages = with pkgs; [ gnome.gnome-settings-daemon ];
+  services.udev.packages = with pkgs; [ gnome-settings-daemon ];
 }
