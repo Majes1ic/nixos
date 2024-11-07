@@ -21,7 +21,7 @@
     zed-editor
     gnomeExtensions.easyeffects-preset-selector
     easyeffects
-    jellyfin-mpv-shim
+    #jellyfin-mpv-shim
     jellyfin-media-player
     lazygit
     bottles
