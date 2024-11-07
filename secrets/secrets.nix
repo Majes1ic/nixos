@@ -3,6 +3,9 @@ let
   homelab = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBrHg11XOCtV+oktl/erPg4VrmOohP0WksQiJqGKwQ0C root@homelab";
 in
 {
-  "usrPass.age".publicKeys = [ maximum ];
+  "usrPass.age".publicKeys = [
+    maximum
+    homelab
+  ];
   "porkbunVars.age".publicKeys = [ homelab ];
 }
