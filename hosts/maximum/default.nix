@@ -14,7 +14,7 @@
     ../../modules/programs/wireguard.nix
   ];
 
-  modules.virtualisation.graphicalVM = true;
+  custom.virtualisation.graphicalVM = true;
 
   environment.systemPackages = with pkgs; [
     lm_sensors
