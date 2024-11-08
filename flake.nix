@@ -52,6 +52,14 @@
         };
       };
 
+      packages.x86_64-linux.installer =
+        (nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          modules = [
+            ./hosts/installer.nix
+          ];
+        }).config.system.build.isoImage;
+
       homeConfigurations = {
         "${username}@mac" = home-manager.lib.homeManagerConfiguration {
           modules = [ ./home/mac.nix ];

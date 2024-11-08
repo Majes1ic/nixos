@@ -1,0 +1,29 @@
+{ pkgs, modulesPath, ... }:
+{
+  imports = [ "${modulesPath}/installer/cd-dvd/installation-cd-minimal.nix" ];
+
+  isoImage.compressImage = false;
+
+  environment.systemPackages = with pkgs; [
+    gitMinimal
+    zellij
+    btop
+    neovim
+  ];
+
+  nix.settings.experimental-features = "nix-command flakes";
+
+  services.openssh = {
+    enable = true;
+    openFirewall = true;
+    settings.PasswordAuthentication = false;
+    settings.KbdInteractiveAuthentication = false;
+    knownHosts."github.com".publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
+  };
+
+  users.users.root.openssh.authorizedKeys.keys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFqX+SdocMJggapFzaSHcwcua4qU3VNjshhchJB0b5Lh tomawdry@proton.me"
+  ];
+
+  system.stateVersion = "24.05";
+}
