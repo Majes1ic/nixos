@@ -1,6 +1,5 @@
-{ pkgs, username, ... }:
+{ username, ... }:
 {
-  environment.systemPackages = with pkgs; [ wireguard-tools ];
   networking.wg-quick.interfaces = {
     wg-discord = {
       # Unlike the allowedIPs setting, the subnet mask here (/24) doesn't
@@ -23,40 +22,43 @@
         }
       ];
     };
+
     wg-home = {
       address = [ "10.0.1.1/24" ];
-
       listenPort = 51820;
       autostart = true;
       privateKeyFile = "/home/${username}/.wireguard/private";
+
       peers = [
         {
-          #for laptop
+          # laptop
           publicKey = "T1EHPg4tkmQ1KFWGzspBYAkjzLL1JzWTNtPsSkObLUE=";
           allowedIPs = [ "10.0.1.2/32" ];
         }
         {
-          #for phone
+          # phone
           publicKey = "xDDnUvzTcSGA4htsmYBSQykgLVv/MCEUwEKc+IOoL3w=";
           allowedIPs = [ "10.0.1.3/32" ];
         }
       ];
     };
+
     wg-air = {
       configFile = "/etc/wireguard/AirVPN_Swiss.conf";
       autostart = false;
     };
   };
-  networking.firewall.allowedUDPPorts = [ 51820 ];
-  networking.firewall.interfaces.wg-air.allowedTCPPorts = [ 36780 ];
-  networking.firewall.interfaces.wg-air.allowedUDPPorts = [ 36780 ];
 
-  programs.zsh = {
-    shellAliases = {
-      wg-discord-up = "sudo systemctl start wg-quick-wg-discord";
-      wg-discord-down = "sudo systemctl stop wg-quick-wg-discord";
-      wg-home-up = "sudo systemctl start wg-quick-wg-home";
-      wg-home-down = "sudo systemctl stop wg-quick-wg-home";
-    };
+  networking.firewall = {
+    allowedUDPPorts = [ 51820 ];
+    interfaces.wg-air.allowedTCPPorts = [ 36780 ];
+    interfaces.wg-air.allowedUDPPorts = [ 36780 ];
+  };
+
+  programs.zsh.shellAliases = {
+    wg-discord-up = "sudo systemctl start wg-quick-wg-discord";
+    wg-discord-down = "sudo systemctl stop wg-quick-wg-discord";
+    wg-home-up = "sudo systemctl start wg-quick-wg-home";
+    wg-home-down = "sudo systemctl stop wg-quick-wg-home";
   };
 }

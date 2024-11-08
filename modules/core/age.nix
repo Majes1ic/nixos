@@ -1,4 +1,4 @@
-{inputs, pkgs, ... }:
+{ inputs, pkgs, ... }:
 {
   imports = [
     inputs.agenix.nixosModules.default
@@ -8,5 +8,5 @@
     inputs.agenix.packages.${pkgs.system}.default
   ];
 
-  age.identityPaths = ["/etc/ssh/ssh_host_ed25519_key"];
+  age.identityPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
 }

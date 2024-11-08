@@ -7,9 +7,7 @@
     settings = {
       PasswordAuthentication = false;
       KbdInteractiveAuthentication = false;
-      AllowUsers = [
-        username
-      ];
+      AllowUsers = [ username ];
     };
 
     hostKeys = [
@@ -21,7 +19,7 @@
   };
 
   networking.firewall.interfaces = {
-    #wg-discord.allowedTCPPorts = [22];
+    # wg-discord.allowedTCPPorts = [ 22 ];
     wg-home.allowedTCPPorts = [ 22 ];
     enp3s0.allowedTCPPorts = [ 22 ];
   };

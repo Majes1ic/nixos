@@ -68,8 +68,8 @@
         src = pkgs.fetchFromGitHub {
           owner = "dimtpap";
           repo = "obs-pipewire-audio-capture";
-          rev = "38176824e5f95f5e2542130f6d7c027ea64536c4";
-          sha256 = "sha256-z1eHz5uxfwfauO0zB/mMxzRmte5UYKGwsi3CkQu5Vhc=";
+          rev = "c8c57b39fddf01c365f3d1234edc983ee0da1b5b";
+          hash = "sha256-qdwJS4WJxoIg2lIq3aHgBBrQr0Y56X4eZJzOjkwXegE=";
         };
         cmakeFlags = [ ];
       })

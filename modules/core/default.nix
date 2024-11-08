@@ -1,7 +1,7 @@
 {
   imports = [
     ./age.nix
-    ./filesystem.nix
+    ./file-system.nix
     ./home-manager.nix
     ./nix.nix
     ./user.nix

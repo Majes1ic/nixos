@@ -19,7 +19,12 @@
   };
 
   outputs =
-    { nixpkgs, home-manager, ... }@inputs:
+    {
+      self,
+      nixpkgs,
+      home-manager,
+      ...
+    }@inputs:
     let
       username = "tom";
     in
@@ -28,7 +33,7 @@
         maximum = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = {
-            inherit inputs username;
+            inherit self inputs username;
             hostname = "maximum";
           };
           modules = [
@@ -40,7 +45,7 @@
         homelab = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
           specialArgs = {
-            inherit inputs username;
+            inherit self inputs username;
             hostname = "homelab";
           };
           modules = [ ./hosts/homelab ];
@@ -55,7 +60,7 @@
             config.allowUnfree = true;
           };
           extraSpecialArgs = {
-            inherit inputs username;
+            inherit self inputs username;
           };
         };
       };

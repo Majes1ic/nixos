@@ -11,7 +11,6 @@
   };
 
   # Use compressed RAM for swap
-  swapDevices = [ ];
   zramSwap.enable = true;
 
   # Weekly SSD triming

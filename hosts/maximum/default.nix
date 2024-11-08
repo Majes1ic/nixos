@@ -11,7 +11,7 @@
     ../../modules/system/ssh.nix
     ../../modules/system/virtualisation.nix
     ../../modules/programs/steam.nix
-    ../../modules/programs/wireguard.nix
+    ../../modules/services/wireguard.nix
   ];
 
   custom.virtualisation.graphicalVM = true;

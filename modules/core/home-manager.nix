@@ -1,16 +1,21 @@
-{ inputs, username, hostname, ... }:
+{
+  inputs,
+  username,
+  hostname,
+  ...
+}:
 {
   imports = [
     inputs.home-manager.nixosModules.home-manager
   ];
 
   home-manager = {
-    extraSpecialArgs = { inherit inputs username hostname; };
+    extraSpecialArgs = {
+      inherit inputs username hostname;
+    };
     # home manager uses same nix package as OS
     useGlobalPkgs = true;
     useUserPackages = true;
-    users = {
-      ${username} = import ../../home/${hostname}.nix;
-    };
+    users.${username} = import ../../home/${hostname}.nix;
   };
 }

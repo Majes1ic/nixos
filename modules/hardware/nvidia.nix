@@ -1,4 +1,5 @@
-{ pkgs, config, ... }: {
+{ pkgs, config, ... }:
+{
   hardware.graphics = {
     enable = true;
     # nvidia hardware acceleration
@@ -17,9 +18,6 @@
   };
 
   services.xserver.videoDrivers = [ "nvidia" ];
-
-  # Fixes extra ghost display
-  boot.kernelParams = [ "nvidia-drm.fbdev=1" ];
 
   # Completely disable suspend and hibernate as it seems broken on nvidia and
   # accidentally pressing the button in gnome can put the system in a broken

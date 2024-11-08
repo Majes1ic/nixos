@@ -8,7 +8,7 @@
     ../../modules/services/jellyfin.nix
     ../../modules/system/ssh.nix
     # Wireguards needs options for customising
-    # ../../modules/programs/wireguard.nix
+    # ../../modules/services/wireguard.nix
   ];
 
   networking.hostId = "d48f462c";
