@@ -7,7 +7,7 @@
     ../../modules/hardware/nvidia.nix
     ../../modules/hardware/audio.nix
     ../../modules/hardware/networking.nix
-    ../../modules/hardware/firewall.nix
+    ../../modules/system/firewall.nix
     ../../modules/system/gnome.nix
     ../../modules/system/ssh.nix
     ../../modules/system/virtualisation.nix
