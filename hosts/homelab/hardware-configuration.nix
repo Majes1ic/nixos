@@ -23,12 +23,12 @@
   boot.extraModulePackages = [ ];
 
   fileSystems."/" = {
-    device = "/dev/disk/by-uuid/3f2834a2-51a1-415c-b1c7-e80838dd0bec";
+    device = "/dev/disk/by-label/homelab-nixos";
     fsType = "ext4";
   };
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/E2FA-2C21";
+    device = "/dev/disk/by-label/homelaboot";
     fsType = "vfat";
     options = [ "umask=0077" ];
   };
