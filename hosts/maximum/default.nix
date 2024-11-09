@@ -21,5 +21,6 @@
   ];
 
   networking.hostId = "150ce5b1";
+  networking.firewall.defaultInterfaces = [ "enp3s0" ];
   system.stateVersion = "23.05";
 }
