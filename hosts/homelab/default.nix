@@ -12,7 +12,6 @@
   ];
 
   networking.hostId = "d48f462c";
-  # TODO: Add default wired interface here
-  networking.firewall.defaultInterfaces = [ "" ];
+  networking.firewall.defaultInterfaces = [ "enp34s0" ];
   system.stateVersion = "23.05";
 }
