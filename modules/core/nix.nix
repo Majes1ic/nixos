@@ -81,6 +81,8 @@
               fi
 
               hostname=$1
+              # shellcheck disable=SC2034
+              ip=$2
               if [[ "$hostname" == "${hostname}" ]]; then
                 echo "Error: Cannot ${cmd} remotely on local host"
                 exit 1
@@ -110,7 +112,7 @@
               mkdir -p "$remote_builds"
               trap "popd >/dev/null 2>&1 || true" EXIT
               pushd "$remote_builds" >/dev/null 2>&1
-              nixos-rebuild build --flake "$flake#$hostname" ${optionalString (cmd != "boot") "--fast"} "''${@:2}"
+              nixos-rebuild build --flake "$flake#$hostname" ${optionalString (cmd != "boot") "--fast"} "''${@:3}"
             '';
         in
         pkgs.writeShellApplication {
@@ -130,16 +132,16 @@
                     exit 1
                   fi
 
-                  remote_system=$(ssh "${username}@$hostname.lan" readlink /run/current-system)
+                  remote_system=$(ssh "${username}@$ip" readlink /run/current-system)
                   nixos_system=$(readlink "$remote_builds/result")
-                  nix-copy-closure --from "$hostname.lan" "$remote_system"
+                  nix-copy-closure --from "$ip" "$remote_system"
                   nvd --color always diff "$remote_system" "$nixos_system"
                 ''
               else
                 optionalString (cmd != "build") # bash
                   ''
                     nixos-rebuild ${cmd} ${optionalString (cmd != "boot") "--fast"} \
-                      --use-remote-sudo --flake "$flake#$hostname" --target-host "root@$hostname.lan" "''${@:2}"
+                      --use-remote-sudo --flake "$flake#$hostname" --target-host "root@$ip" "''${@:3}"
                   ''
             );
         }
