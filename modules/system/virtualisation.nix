@@ -55,6 +55,8 @@ in
     virtualisation.libvirtd.enable = true;
     users.users.${username}.extraGroups = [ "libvirtd" ];
 
+    virtualisation.vmVariant.networking.firewall.enable = lib.mkVMOverride false;
+
     virtualisation.vmVariant.virtualisation = {
       cores = 4;
       memorySize = 4096;
