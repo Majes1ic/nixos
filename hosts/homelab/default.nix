@@ -1,11 +1,12 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ../../modules/hardware/nvidia.nix
     ../../modules/core
     ../../modules/hardware/networking.nix
     ../../modules/system/firewall.nix
     ../../modules/system/virtualisation.nix
-    #    ../../modules/services/caddy.nix
+    ../../modules/services/caddy.nix
     ../../modules/services/jellyfin.nix
     ../../modules/system/ssh.nix
     # Wireguards needs options for customising
