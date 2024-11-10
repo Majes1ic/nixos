@@ -7,7 +7,10 @@
     settings = {
       PasswordAuthentication = false;
       KbdInteractiveAuthentication = false;
-      AllowUsers = [ username ];
+      AllowUsers = [
+        username
+        "root"
+      ];
     };
 
     hostKeys = [
@@ -24,6 +27,9 @@
   };
 
   users.users.${username}.openssh.authorizedKeys.keys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFqX+SdocMJggapFzaSHcwcua4qU3VNjshhchJB0b5Lh tomawdry@proton.me"
+  ];
+  users.users.root.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFqX+SdocMJggapFzaSHcwcua4qU3VNjshhchJB0b5Lh tomawdry@proton.me"
   ];
 }
