@@ -8,7 +8,6 @@
   home.packages = with pkgs; [
     kitty
     micro
-    git
     xdg-utils # because vs code doesn't work without it
     vesktop # discord client
     discord
@@ -25,6 +24,8 @@
     jellyfin-media-player
     lazygit
     bottles
+    winbox4
+    wl-clipboard
   ];
 
   programs.neovim = {
