@@ -33,6 +33,15 @@
     options = [ "umask=0077" ];
   };
 
+  fileSystems."/mnt/Mercury" = {
+    device = "/dev/disk/by-label/Mercury";
+    fsType = "ext4";
+  };
+  fileSystems."/mnt/Gemini" = {
+    device = "/dev/disk/by-label/Gemini";
+    fsType = "ext4";
+  };
+
   nixpkgs.hostPlatform = "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   hardware.nvidia.open = lib.mkForce false;
