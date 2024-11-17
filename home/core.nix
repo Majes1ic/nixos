@@ -11,6 +11,8 @@
       tree
       wget
       (nerdfonts.override { fonts = [ "FiraCode" ]; })
+      btop
+      git
     ];
   };
 
