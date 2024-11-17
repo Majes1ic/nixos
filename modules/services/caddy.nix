@@ -5,6 +5,9 @@
   ...
 }:
 let
+  inherit (lib) mkOption mapAttrs types;
+  cfg = config.custom.services.caddy;
+
   porkBunPatchedCaddy =
     (pkgs.caddy.overrideAttrs (old: {
       vendorHash = "sha256-1OJelf2Ui7Iz4SoXStfTwEtLi/fSpgfR2gqsZi7KBZE=";
@@ -38,41 +41,59 @@ let
       };
 in
 {
-  services.caddy = {
-    enable = true;
-    package = porkBunPatchedCaddy;
-
-    globalConfig = ''
-      debug
-      acme_dns porkbun {
-        api_key {env.PORKBUN_API_KEY}
-        api_secret_key {env.PORKBUN_SECRET_API_KEY}
-      }
-    '';
-
-    virtualHosts."torrent.494203.xyz".extraConfig = ''
-      reverse_proxy http://localhost:7337
-    '';
+  options.custom.services.caddy = {
+    virtualHosts = mkOption {
+      type = types.attrs;
+      default = { };
+      description = ''
+        Wrapper for Caddy virtual host config that configures DNS ACME for each
+        endpoint
+      '';
+    };
   };
 
-  age.secrets.porkbunVars.file = ../../secrets/porkbunVars.age;
-  systemd.services.caddy.serviceConfig.EnvironmentFile = config.age.secrets.porkbunVars.path;
-
-  virtualisation.vmVariant = {
+  config = {
     services.caddy = {
-      # Confusingly auto_https off doesn't actually server all hosts of http
-      # Each virtualhost needs to explicity specify http://
-      # https://caddy.community/t/making-sense-of-auto-https-and-why-disabling-it-still-serves-https-instead-of-http/9761
-      globalConfig = lib.mkVMOverride ''
-        debug
-        auto_https off
-      '';
+      enable = true;
+      package = porkBunPatchedCaddy;
 
-      virtualHosts = lib.mkVMOverride (
-        lib.mapAttrs (
-          _: value: value // { hostName = ("http://" + value.hostName); }
-        ) config.services.caddy.virtualHosts
-      );
+      virtualHosts = mapAttrs (
+        _: virtualHost:
+        virtualHost
+        // {
+          extraConfig = ''
+            tls {
+              dns porkbun {
+                api_key {env.PORKBUN_API_KEY}
+                api_secret_key {env.PORKBUN_SECRET_API_KEY}
+              }
+              resolvers 1.1.1.1
+            }
+            ${virtualHost.extraConfig}
+          '';
+        }
+      ) cfg.virtualHosts;
+    };
+
+    age.secrets.porkbunVars.file = ../../secrets/porkbunVars.age;
+    systemd.services.caddy.serviceConfig.EnvironmentFile = config.age.secrets.porkbunVars.path;
+
+    virtualisation.vmVariant = {
+      services.caddy = {
+        # Confusingly auto_https off doesn't actually server all hosts of http
+        # Each virtualhost needs to explicity specify http://
+        # https://caddy.community/t/making-sense-of-auto-https-and-why-disabling-it-still-serves-https-instead-of-http/9761
+        globalConfig = lib.mkVMOverride ''
+          debug
+          auto_https off
+        '';
+
+        virtualHosts = lib.mkVMOverride (
+          lib.mapAttrs (
+            _: value: value // { hostName = ("http://" + value.hostName); }
+          ) config.services.caddy.virtualHosts
+        );
+      };
     };
   };
   networking.firewall.allowedUDPPorts = [ 443 ];
