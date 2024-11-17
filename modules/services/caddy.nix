@@ -42,10 +42,8 @@ in
     enable = true;
     package = porkBunPatchedCaddy;
 
-    # Note from Josh: Double check that the porkbun vars in your secrets file
-    # match these exactly (the two below are correct now but I initially gave
-    # you the wrong ones)
     globalConfig = ''
+      debug
       acme_dns porkbun {
         api_key {env.PORKBUN_API_KEY}
         api_secret_key {env.PORKBUN_SECRET_API_KEY}
@@ -77,4 +75,9 @@ in
       );
     };
   };
+  networking.firewall.allowedUDPPorts = [ 443 ];
+  networking.firewall.allowedTCPPorts = [
+    443
+    80
+  ];
 }
