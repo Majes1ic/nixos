@@ -5,28 +5,44 @@
     ./programs/vscode.nix
   ];
 
-  home.packages = with pkgs; [
-    kitty
-    micro
-    xdg-utils # because vs code doesn't work without it
-    vesktop # discord client
-    discord
-    prismlauncher
-    bitwarden-desktop
-    stremio
-    qbittorrent
-    qpwgraph # audio piping (patch panel)
-    lua
-    zed-editor
-    gnomeExtensions.easyeffects-preset-selector
-    easyeffects
-    #jellyfin-mpv-shim
-    jellyfin-media-player
-    lazygit
-    bottles
-    winbox4
-    wl-clipboard
-  ];
+  home.packages =
+    with pkgs;
+    [
+      kitty
+      micro
+      xdg-utils # because vs code doesn't work without it
+      vesktop # discord client
+      discord
+      prismlauncher
+      bitwarden-desktop
+      stremio
+      qbittorrent
+      qpwgraph # audio piping (patch panel)
+      lua
+      zed-editor
+      gnomeExtensions.easyeffects-preset-selector
+      easyeffects
+      #jellyfin-mpv-shim
+      jellyfin-media-player
+      lazygit
+      bottles
+      winbox4
+      wl-clipboard
+      chromium
+    ]
+    ++ [
+
+      (makeDesktopItem {
+        name = "broadcast-box";
+        desktopName = "Broadcast Box";
+        type = "Application";
+        exec = "chromium --app=https://stream.908005.xyz";
+        icon = pkgs.fetchurl {
+          url = "https://avatars.githubusercontent.com/u/67584243?s=200&v=4";
+          hash = "sha256-12eai258gfzlt+XT3mrHF9DvD9YlHf5yLjQFy8EbLFM=";
+        };
+      })
+    ];
 
   programs.neovim = {
     enable = true;
