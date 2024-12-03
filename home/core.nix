@@ -10,7 +10,7 @@
       zip
       tree
       wget
-      (nerdfonts.override { fonts = [ "FiraCode" ]; })
+      nerd-fonts.fira-code
       btop
       git
     ];
