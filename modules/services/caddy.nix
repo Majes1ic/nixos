@@ -95,10 +95,10 @@ in
         );
       };
     };
+    networking.firewall.allowedUDPPorts = [ 443 ];
+    networking.firewall.allowedTCPPorts = [
+      443
+      80
+    ];
   };
-  networking.firewall.allowedUDPPorts = [ 443 ];
-  networking.firewall.allowedTCPPorts = [
-    443
-    80
-  ];
 }

@@ -19,8 +19,13 @@
     "sd_mod"
   ];
   boot.initrd.kernelModules = [ ];
+
+  # amd kernel
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
+
+  # enable zfs support
+  boot.supportedFilesystems.zfs = true;
 
   fileSystems."/" = {
     device = "/dev/disk/by-label/homelab-nixos";
@@ -33,14 +38,14 @@
     options = [ "umask=0077" ];
   };
 
-  fileSystems."/mnt/Mercury" = {
-    device = "/dev/disk/by-label/Mercury";
-    fsType = "ext4";
-  };
-  fileSystems."/mnt/Gemini" = {
-    device = "/dev/disk/by-label/Gemini";
-    fsType = "ext4";
-  };
+  # fileSystems."/data" = {
+  #   device = "/dev/disk/by-label/Mercury";
+  #   #fsType = "ext4";
+  # };
+  # fileSystems."/mnt/Gemini" = {
+  #   device = "/dev/disk/by-label/Gemini";
+  #   #fsType = "ext4";
+  # };
 
   nixpkgs.hostPlatform = "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;

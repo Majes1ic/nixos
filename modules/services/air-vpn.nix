@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  import = [ inputs.vpn-confinement.nixosModules.default ];
+  imports = [ inputs.vpn-confinement.nixosModules.default ];
 
   vpnNamespaces.air-vpn = {
     enable = true;

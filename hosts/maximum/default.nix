@@ -37,21 +37,24 @@
     };
 
     wg-home = {
-      address = [ "10.0.1.1/24" ];
-      listenPort = 51820;
+      address = [ "10.0.1.10/24" ];
       autostart = true;
       privateKeyFile = "/home/${username}/.wireguard/private";
 
       peers = [
+        # {
+        #   # laptop
+        #   publicKey = "T1EHPg4tkmQ1KFWGzspBYAkjzLL1JzWTNtPsSkObLUE=";
+        #   allowedIPs = [ "10.0.1.11/32" ];
+        # }
+        # {
+        #   # phone
+        #   publicKey = "xDDnUvzTcSGA4htsmYBSQykgLVv/MCEUwEKc+IOoL3w=";
+        #   allowedIPs = [ "10.0.1.3/32" ];
+        # }
         {
-          # laptop
-          publicKey = "T1EHPg4tkmQ1KFWGzspBYAkjzLL1JzWTNtPsSkObLUE=";
-          allowedIPs = [ "10.0.1.2/32" ];
-        }
-        {
-          # phone
-          publicKey = "xDDnUvzTcSGA4htsmYBSQykgLVv/MCEUwEKc+IOoL3w=";
-          allowedIPs = [ "10.0.1.3/32" ];
+          publicKey = "RZu9z1llyyWIb/Bn4oxde299W1J0ZUIrGY5HZX2OgFI=";
+          allowedIPs = [ "10.0.1.0/24" ];
         }
       ];
     };
@@ -63,7 +66,7 @@
   };
 
   networking.firewall = {
-    allowedUDPPorts = [ 51820 ];
+    # allowedUDPPorts = [ 51820 ];
     interfaces.wg-air.allowedTCPPorts = [ 36780 ];
     interfaces.wg-air.allowedUDPPorts = [ 36780 ];
   };

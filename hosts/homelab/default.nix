@@ -9,9 +9,9 @@
     ../../modules/services/caddy.nix
     ../../modules/services/jellyfin.nix
     ../../modules/services/immich.nix
+    ../../modules/services/qbittorrent-nox.nix
     ../../modules/system/ssh.nix
-    # Wireguards needs options for customising
-    # ../../modules/services/wireguard.nix
+    ../../modules/services/air-vpn.nix
   ];
 
   networking.hostId = "d48f462c";

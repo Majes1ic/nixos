@@ -53,6 +53,7 @@ in
       PrivateMounts = true;
       PrivateTmp = true;
       ProtectSystem = "strict"; # does not apply to service directories like StateDirectory
+      ReadWritePaths = "/data/media/torrents";
       ProtectHome = true;
       ProtectControlGroups = true;
       ProtectClock = true;
@@ -82,7 +83,7 @@ in
   };
 
   systemd.tmpfiles.rules = [
-    "d /var/lib/qbittorrent-nox/qBittorrent/downloads 0755 qbittorrent-nox qbittorrent-nox - -"
+    "d /data/torrents 0755 qbittorrent-nox qbittorrent-nox - -"
   ];
 
   vpnNamespaces.air-vpn = {
