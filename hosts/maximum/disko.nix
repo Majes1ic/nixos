@@ -47,39 +47,39 @@ in
           };
         };
       };
-      zpool.max-zroot = {
-        type = "zpool";
-        options.ashift = "12";
+    };
+    zpool.max-zroot = {
+      type = "zpool";
+      options.ashift = "12";
 
-        rootFsOptions = {
-          atime = "off";
-          mountpoint = "none";
-          xattr = "sa";
-          acltype = "posixacl";
-          compression = "lz4";
+      rootFsOptions = {
+        atime = "off";
+        mountpoint = "none";
+        xattr = "sa";
+        acltype = "posixacl";
+        compression = "lz4";
+      };
+
+      datasets = {
+        ${pseudoRoot}.type = "zfs_fs";
+
+        "${pseudoRoot}/root" = {
+          type = "zfs_fs";
+          mountpoint = "/";
+          options.mountpoint = "legacy";
+        };
+        "${pseudoRoot}/steam" = {
+          type = "zfs_fs";
+          mountpoint = "/home/${username}/.local/share/Steam";
+          options.mountpoint = "legacy";
+          options.recordsize = "1M";
         };
 
-        datasets = {
-          ${pseudoRoot}.type = "zfs_fs";
-
-          "${pseudoRoot}/root" = {
-            type = "zfs_fs";
-            mountpoint = "/";
-            options.mountpoint = "legacy";
-          };
-          "${pseudoRoot}/steam" = {
-            type = "zfs_fs";
-            mountpoint = "/home/${username}/.local/share/Steam";
-            options.mountpoint = "legacy";
-            options.recordsize = "1M";
-          };
-
-          "${pseudoRoot}/games" = {
-            type = "zfs_fs";
-            mountpoint = "/home/${username}/games";
-            options.mountpoint = "legacy";
-            options.recordsize = "1M";
-          };
+        "${pseudoRoot}/games" = {
+          type = "zfs_fs";
+          mountpoint = "/home/${username}/games";
+          options.mountpoint = "legacy";
+          options.recordsize = "1M";
         };
       };
     };
