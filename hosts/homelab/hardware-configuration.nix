@@ -49,6 +49,9 @@
   #   #fsType = "ext4";
   # };
 
+  #enables trimming
+  services.fstrim.enable = true;
+
   nixpkgs.hostPlatform = "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   hardware.nvidia.open = lib.mkForce false;
