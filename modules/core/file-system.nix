@@ -13,6 +13,8 @@
   # Use compressed RAM for swap
   zramSwap.enable = true;
 
-  # Weekly SSD triming
-  services.fstrim.enable = true;
+  services.zfs = {
+    trim.enable = true;
+    autoScrub.enable = true;
+  };
 }
