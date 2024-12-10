@@ -23,19 +23,7 @@
   boot.extraModulePackages = [ ];
 
   boot.supportedFilesystems.zfs = true;
-
-  fileSystems."/" = {
-    device = "/dev/disk/by-uuid/d792a476-d880-4703-9244-d465a41ff394";
-    fsType = "ext4";
-  };
-
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/501D-64D5";
-    fsType = "vfat";
-    options = [
-      "umask=0077"
-    ];
-  };
+  systemd.services.zfs-mount.enable = false;
 
   nixpkgs.hostPlatform = "x86_64-linux";
 }
