@@ -2,6 +2,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ./disko.nix
     ../../modules/core
     ../../modules/hardware/windows.nix
     ../../modules/hardware/nvidia.nix
