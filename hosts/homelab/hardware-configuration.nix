@@ -27,6 +27,8 @@
   # enable zfs support
   boot.supportedFilesystems.zfs = true;
 
+  boot.zfs.pools.homelab-zpool.devNodes = "/dev/disk/by-label/homelab-zpool";
+
   fileSystems."/" = {
     device = "/dev/disk/by-label/homelab-nixos";
     fsType = "ext4";
