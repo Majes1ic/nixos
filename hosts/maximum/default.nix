@@ -54,7 +54,8 @@
         # }
         {
           publicKey = "RZu9z1llyyWIb/Bn4oxde299W1J0ZUIrGY5HZX2OgFI=";
-          allowedIPs = [ "10.0.1.0/24" ];
+          allowedIPs = [ "10.0.1.1/24" ];
+          endpoint = "hh90a7hr8zt.sn.mynetname.net:51820";
         }
       ];
     };
