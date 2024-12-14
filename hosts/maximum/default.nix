@@ -4,7 +4,6 @@
     ./hardware-configuration.nix
     ./disko.nix
     ../../modules/core
-    ../../modules/hardware/windows.nix
     ../../modules/hardware/nvidia.nix
     ../../modules/hardware/audio.nix
     ../../modules/hardware/networking.nix
