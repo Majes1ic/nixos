@@ -10,15 +10,6 @@
 {
   nixpkgs = {
     overlays = [
-      (_: _: {
-        inherit
-          (import (fetchTarball {
-            url = "https://github.com/JManch/nixpkgs/archive/49ab9e2f2bf2a905f650764da0e6dc1b5199c644.tar.gz";
-            sha256 = "sha256:0gn3bk4pga1jidl31657wkxzbc7x7ipwd4hq3a8fbggsv9k38pdf";
-          }) { inherit (pkgs) system; })
-          bibata-cursors
-          ;
-      })
     ];
     config.allowUnfree = true;
   };
