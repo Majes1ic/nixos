@@ -68,19 +68,6 @@ in
           mountpoint = "/";
           options.mountpoint = "legacy";
         };
-        "${pseudoRoot}/steam" = {
-          type = "zfs_fs";
-          mountpoint = "/home/${username}/.local/share/Steam";
-          options.mountpoint = "legacy";
-          options.recordsize = "1M";
-        };
-
-        "${pseudoRoot}/games" = {
-          type = "zfs_fs";
-          mountpoint = "/home/${username}/games";
-          options.mountpoint = "legacy";
-          options.recordsize = "1M";
-        };
       };
     };
   };
