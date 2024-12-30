@@ -12,6 +12,7 @@
     ../../modules/services/qbittorrent-nox.nix
     ../../modules/system/ssh.nix
     ../../modules/services/air-vpn.nix
+    ../../modules/services/file-server.nix
   ];
 
   networking.hostId = "d48f462c";
