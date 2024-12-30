@@ -4,6 +4,7 @@
   config,
   lib,
   modulesPath,
+  username,
   ...
 }:
 {
@@ -28,6 +29,7 @@
   boot.supportedFilesystems.zfs = true;
 
   boot.zfs.pools.homelab-zpool.devNodes = "/dev/disk/by-label/homelab-zpool";
+  boot.zfs.extraPools = [ "homelab-zpool" ];
 
   fileSystems."/" = {
     device = "/dev/disk/by-label/homelab-nixos";
@@ -51,6 +53,22 @@
 
   #enables trimming
   services.fstrim.enable = true;
+
+  networking.wg-quick.interfaces = {
+    wg-discord = {
+      address = [ "10.0.0.9/24" ];
+      autostart = true;
+      privateKeyFile = "home/${username}/.wireguard/privatekey";
+      peers = [
+        {
+          publicKey = "PbFraM0QgSnR1h+mGwqeAl6e7zrwGuNBdAmxbnSxtms=";
+          allowedIPs = [ "10.0.0.0/24" ];
+          endpoint = "he908z488kp.sn.mynetname.net:13232";
+          persistentKeepalive = 25;
+        }
+      ];
+    };
+  };
 
   nixpkgs.hostPlatform = "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
