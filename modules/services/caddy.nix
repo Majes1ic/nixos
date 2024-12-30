@@ -100,5 +100,12 @@ in
       443
       80
     ];
+
+    # open ports on friends wg interface
+    networking.firewall.interfaces."wg-discord".allowedUDPPorts = [ 443 ];
+    networking.firewall.interfaces."wg-discord".allowedTCPPorts = [
+      443
+      80
+    ];
   };
 }
