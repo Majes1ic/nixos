@@ -9,4 +9,8 @@
   custom.services.caddy.virtualHosts."photos.494203.xyz".extraConfig = ''
     reverse_proxy http://localhost:2283
   '';
+  users.users.immich.extraGroups = [
+    "video"
+    "render"
+  ];
 }
