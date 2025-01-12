@@ -22,13 +22,15 @@
       zed-editor
       gnomeExtensions.easyeffects-preset-selector
       easyeffects
-      #jellyfin-mpv-shim
+      jellyfin-mpv-shim
       jellyfin-media-player
       lazygit
       bottles
       winbox4
       wl-clipboard
       chromium
+      tor
+      tor-browser
     ]
     ++ [
 
@@ -73,7 +75,7 @@
       patches = (old.patches or [ ]) ++ [
         (pkgs.fetchpatch {
           name = "webrtc-pacing-handler";
-          url = "https://patch-diff.githubusercontent.com/raw/obsproject/obs-studio/pull/10966.patch";
+          url = "https://github.com/obsproject/obs-studio/commit/2aae0f4d6849a7c23f44760f548e13f3a307426b.patch";
           hash = "sha256-VKNA0N4JHat/tLSRk3CLY+NcHsIoIvRHYfHo572KSGk=";
         })
       ];
