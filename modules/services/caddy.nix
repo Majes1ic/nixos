@@ -7,39 +7,39 @@
 let
   inherit (lib) mkOption mapAttrs types;
   cfg = config.custom.services.caddy;
-
-  porkBunPatchedCaddy =
-    (pkgs.caddy.overrideAttrs (old: {
-      vendorHash = "sha256-1OJelf2Ui7Iz4SoXStfTwEtLi/fSpgfR2gqsZi7KBZE=";
-      preBuild = ''
-        chmod -R u+w vendor
-        [ -f vendor/go.mod ] && mv -t . vendor/go.{mod,sum}
-        go generate
-        sed -i "/standard/a _ \"github.com/caddy-dns/porkbun\"" ./cmd/caddy/main.go
-      '';
-    })).override
-      {
-        buildGoModule =
-          args:
-          pkgs.buildGoModule (
-            args
-            // {
-              modBuildPhase = ''
-                ${lib.getExe pkgs.gnused} -i "/standard/a     _ \"github.com/caddy-dns/porkbun\"" ./cmd/caddy/main.go
-                cat ./cmd/caddy/main.go
-                go get github.com/caddy-dns/porkbun@v0.2.1
-                go generate
-                go mod vendor
-              '';
-
-              modInstallPhase = ''
-                mv -t vendor go.mod go.sum
-                cp -r vendor $out
-              '';
-            }
-          );
-      };
 in
+#
+#  porkBunPatchedCaddy =
+#    (pkgs.caddy.overrideAttrs (old: {
+#      vendorHash = "sha256-1OJelf2Ui7Iz4SoXStfTwEtLi/fSpgfR2gqsZi7KBZE=";
+#      preBuild = ''
+#        chmod -R u+w vendor
+#        [ -f vendor/go.mod ] && mv -t . vendor/go.{mod,sum}
+#        go generate
+#        sed -i "/standard/a _ \"github.com/caddy-dns/porkbun\"" ./cmd/caddy/main.go
+#      '';
+#    })).override
+#      {
+#        buildGoModule =
+#          args:
+#          pkgs.buildGoModule (
+#            args
+#            // {
+#              modBuildPhase = ''
+#                ${lib.getExe pkgs.gnused} -i "/standard/a     _ \"github.com/caddy-dns/porkbun\"" ./cmd/caddy/main.go
+#                cat ./cmd/caddy/main.go
+#                go get github.com/caddy-dns/porkbun@v0.2.1
+#                go generate
+#                go mod vendor
+#              '';
+#
+#              modInstallPhase = ''
+#                mv -t vendor go.mod go.sum
+#                cp -r vendor $out
+#              '';
+#            }
+#          );
+#      };
 {
   options.custom.services.caddy = {
     virtualHosts = mkOption {
@@ -55,8 +55,10 @@ in
   config = {
     services.caddy = {
       enable = true;
-      package = porkBunPatchedCaddy;
-
+      package = pkgs.caddy.withPlugins {
+        plugins = [ "github.com/caddy-dns/porkbun@v0.2.1" ];
+        hash = "sha256-5rfdWHT2ah5THFKjcSoN+aTLhnjQYbNFQxQTfXB439I=";
+      };
       virtualHosts = mapAttrs (
         _: virtualHost:
         virtualHost
