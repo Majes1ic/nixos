@@ -70,6 +70,15 @@
     };
   };
 
+  programs.zsh.shellAliases = {
+    wg-discord-up = "sudo systemctl start wg-quick-wg-discord";
+    wg-discord-down = "sudo systemctl stop wg-quick-wg-discord";
+    wg-home-up = "sudo systemctl start wg-quick-wg-home";
+    wg-home-down = "sudo systemctl stop wg-quick-wg-home";
+    wg-air-up = "sudo systemctl start wg-quick-wg-air";
+    wg-air-down = "sudo systemctl stop wg-quick-wg-air";
+  };
+
   nixpkgs.hostPlatform = "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   hardware.nvidia.open = lib.mkForce false;
