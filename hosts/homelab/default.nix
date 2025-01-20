@@ -13,7 +13,8 @@
     ../../modules/system/ssh.nix
     ../../modules/services/air-vpn.nix
     ../../modules/services/file-server.nix
-    ../../modules/services/matrix.nix
+    #    ../../modules/services/matrix.nix
+    #    ../../modules/services/teamspeak3.nix
   ];
 
   networking.hostId = "d48f462c";

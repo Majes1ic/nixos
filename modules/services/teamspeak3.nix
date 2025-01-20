@@ -4,6 +4,8 @@
     enable = true;
     openFirewall = false;
     voiceIP = "10.0.0.9";
+    queryIP = "10.0.0.9";
+    fileTransferIP = "10.0.0.9";
   };
 
   networking.firewall.interfaces."wg-discord" = {
