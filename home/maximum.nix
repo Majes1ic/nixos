@@ -31,6 +31,7 @@
       chromium
       tor
       tor-browser
+      teamspeak5_client
     ]
     ++ [
 
