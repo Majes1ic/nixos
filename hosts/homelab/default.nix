@@ -16,6 +16,7 @@
     #    ../../modules/services/matrix.nix
     #    ../../modules/services/teamspeak3.nix
     ../../modules/services/calibre.nix
+    ../../modules/services/music.nix
   ];
 
   networking.hostId = "d48f462c";
