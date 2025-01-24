@@ -18,8 +18,11 @@
     openFirewall = true;
     settings.PasswordAuthentication = false;
     settings.KbdInteractiveAuthentication = false;
-    knownHosts."github.com".publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
+    knownHosts."github.com".publicKey =
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOMqqnkVzrm0SdG6UOoqKLsabgH5C9okWi0dh2l9GKJl";
   };
+
+  networking.firewall.interfaces."wg-home".allowedTCPPorts = [ 22 ];
 
   users.users.root.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFqX+SdocMJggapFzaSHcwcua4qU3VNjshhchJB0b5Lh tomawdry@proton.me"
