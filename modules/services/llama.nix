@@ -11,6 +11,7 @@
       #  "qwen2.5-coder:32b-instruct-q3_K_M"
       #  "qwen2.5:32b-instruct-q3_K_M"
       #  "mistral-small:22b-instruct-2409-q5_1"
+      "DeepSeek-R1-Distill-Qwen-7B-Q6_K_L.gguf"
     ];
   };
   services.open-webui = {
@@ -25,4 +26,6 @@
       WEBUI_AUTH = "False";
     };
   };
+  networking.firewall.interfaces."wg-home".allowedTCPPorts = [ 11111 ];
+  networking.firewall.interfaces."wg-home".allowedUDPPorts = [ 11111 ];
 }

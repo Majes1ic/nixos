@@ -13,6 +13,7 @@
     ../../modules/system/ssh.nix
     ../../modules/system/virtualisation.nix
     ../../modules/programs/steam.nix
+    ../../modules/services/llama.nix
   ];
 
   custom.virtualisation.graphicalVM = true;
