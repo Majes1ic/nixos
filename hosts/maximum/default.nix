@@ -8,6 +8,7 @@
     ../../modules/hardware/audio.nix
     ../../modules/hardware/networking.nix
     ../../modules/hardware/secure-boot.nix
+    ../../modules/hardware/wheel.nix
     ../../modules/system/firewall.nix
     ../../modules/system/gnome.nix
     ../../modules/system/ssh.nix
