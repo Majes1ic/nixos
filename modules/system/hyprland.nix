@@ -2,9 +2,13 @@
   lib,
   pkgs,
   inputs,
+  config,
   username,
   ...
 }:
+let
+  inherit (config.custom.virtualisation) vmVariant;
+in
 {
   # use package from hyprland flake
   nixpkgs.overlays = lib.singleton (
@@ -55,6 +59,7 @@
   services.getty = {
     loginOptions = username;
     extraArgs = [ "--skip-login" ];
+    helpLine = lib.mkForce "";
   };
 
   # Disable timeout as with --skip-login the default timeout of 60 seconds
@@ -79,44 +84,63 @@
       portalPackage = null;
       settings =
         let
-          mod = "SUPER";
-          modShift = "SUPERSHIFT";
+          mod = if vmVariant then "ALT" else "SUPER";
+          modShift = "${mod}SHIFT";
+          modShiftCtrl = "${mod}SHIFTCONTROL";
         in
         {
           input.accel_profile = "flat";
+          cursor.enable_hyprcursor = false;
+          decoration.rounding = 10;
 
-          binds = [
-            "${mod}, H, movefocus, l"
-            "${mod}, L, movefocus, r"
-            "${mod}, K, movefocus, u"
-            "${mod}, J, movefocus, d"
-            "${modShift}, J, workspace, m-1"
-            "${modShift}, K, workspace, m+1"
-            "${mod}, mouse:275, workspace, m-1"
-            "${mod}, mouse:276, workspace, m+1"
-            "${mod}, Left, movewindow, l"
-            "${mod}, Right, movewindow, r"
-            "${mod}, Up, movewindow, u"
-            "${mod}, Down, movewindow, d"
+          binds =
+            [
+              "${mod}, H, movefocus, l"
+              "${mod}, L, movefocus, r"
+              "${mod}, K, movefocus, u"
+              "${mod}, J, movefocus, d"
+              "${modShift}, J, workspace, m-1"
+              "${modShift}, K, workspace, m+1"
+              "${mod}, mouse:275, workspace, m-1"
+              "${mod}, mouse:276, workspace, m+1"
+              "${mod}, Left, movewindow, l"
+              "${mod}, Right, movewindow, r"
+              "${mod}, Up, movewindow, u"
+              "${mod}, Down, movewindow, d"
 
-            "${mod}, W, killactive,"
-            "${mod}, C, exec, togglefloating"
-            "${mod}, F, exec, fullscreen 1"
-            "${modShift}, F, exec, fullscreen 0"
+              "${mod}, W, killactive,"
+              "${mod}, C, exec, togglefloating"
+              "${mod}, F, exec, fullscreen 1"
+              "${modShift}, F, exec, fullscreen 0"
+              "${modShiftCtrl}, Q, exec, loginctl terminate-session \"$XDG_SESSION_ID\""
 
-            "${mod}, TAB, focusmonitor, +1"
+              "${mod}, TAB, focusmonitor, +1"
 
-            "${mod}, Return, exec, uwsm app kitty.desktop"
-            "${mod}SHIFT, Return, workspace, emptym"
-            "${mod}SHIFT, Return, exec, uwsm app kitty.desktop"
+              "${mod}, Return, exec, uwsm app kitty.desktop"
+              "${mod}SHIFT, Return, workspace, emptym"
+              "${mod}SHIFT, Return, exec, uwsm app kitty.desktop"
 
-            "${mod}, Space, exec, uwsm app firefox.desktop"
-            "${mod}SHIFT, Space, workspace, emptym"
-            "${mod}SHIFT, Space, exec, uwsm app firefox.desktop"
+              "${mod}, Space, exec, uwsm app firefox.desktop"
+              "${mod}SHIFT, Space, workspace, emptym"
+              "${mod}SHIFT, Space, exec, uwsm app firefox.desktop"
 
-            "${mod}, S, togglespecialworkspace, social"
-            "${modShift}, S, movetoworkspacesilent, special:social"
-          ];
+              "${mod}, S, togglespecialworkspace, social"
+              "${modShift}, S, movetoworkspacesilent, special:social"
+            ]
+            ++ lib.flatten (
+              lib.genList (
+                x:
+                let
+                  key = toString x;
+                  w = toString (if x == 0 then 10 else x);
+                in
+                [
+                  "${mod}, ${key}, workspace, ${w}"
+                  "${modShift}, ${key}, movetoworkspace, ${w}"
+                  "${modShiftCtrl}, ${key}, movetoworkspacesilent, ${w}"
+                ]
+              ) 10
+            );
 
           bindr = [ "${mod}, ${mod}_L, exec, pkill fuzzel || fuzzel" ];
 
@@ -154,7 +178,7 @@
       systemd.enable = true;
       settings.bar = {
         layer = "top";
-        height = 41;
+        height = 24;
         margin = "0 0 0 0";
 
         "hyprland/workspaces" = { };
@@ -180,6 +204,42 @@
     systemd.user.services.waybar = {
       Unit.After = lib.mkForce [ "graphical-session.target" ];
       Service.Slice = "app-graphical.slice";
+    };
+
+    gtk = {
+      enable = true;
+      iconTheme = {
+        name = "Papirus-Dark";
+        package = pkgs.papirus-icon-theme;
+      };
+    };
+
+    home.pointerCursor = {
+      gtk.enable = true;
+      name = "Bibata-Modern-Classic";
+      package = pkgs.bibata-cursors;
+      size = 24;
+    };
+
+    # Hyprpaper needs a config file otherwise it core dumps
+    xdg.configFile."hypr/hyprpaper.conf".text = ''
+      ipc=true
+    '';
+
+    systemd.user.services.hyprpaper = {
+      Unit = {
+        Description = "Hyprpaper Wallpaper Daemon";
+        PartOf = [ "graphical-session.target" ];
+        Requires = [ "graphical-session.target" ];
+        After = [ "graphical-session.target" ];
+      };
+
+      Service = {
+        Slice = "background-graphical.slice";
+        ExecStart = lib.getExe pkgs.hyprpaper;
+      };
+
+      Install.WantedBy = [ "graphical-session.target" ];
     };
   };
 }
