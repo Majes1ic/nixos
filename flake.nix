@@ -27,6 +27,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    hyprland = {
+      url = "github:hyprwm/Hyprland?rev=882f7ad7d2bbfc7440d0ccaef93b1cdd78e8e3ff";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     vpn-confinement.url = "github:Maroka-chan/VPN-Confinement";
   };
 
