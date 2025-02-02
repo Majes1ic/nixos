@@ -47,6 +47,10 @@ in
 {
   options.custom.virtualisation = {
     graphicalVM = lib.mkEnableOption "graphical VM variant";
+    vmVariant = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+    };
   };
 
   config = {
@@ -55,42 +59,44 @@ in
     virtualisation.libvirtd.enable = true;
     users.users.${username}.extraGroups = [ "libvirtd" ];
 
-    virtualisation.vmVariant.networking.firewall.enable = lib.mkVMOverride false;
+    virtualisation.vmVariant = {
+      networking.firewall.enable = lib.mkVMOverride false;
+      custom.virtualisation.vmVariant = true;
+      virtualisation = {
+        cores = 4;
+        memorySize = 4096;
+        diskSize = 8192;
+        graphics = cfg.graphicalVM;
 
-    virtualisation.vmVariant.virtualisation = {
-      cores = 4;
-      memorySize = 4096;
-      diskSize = 8192;
-      graphics = cfg.graphicalVM;
+        qemu.options = lib.mkIf cfg.graphicalVM [
+          # sdl might be better than gtk on Nvidia
+          "-device virtio-vga-gl"
+          "-display gtk,gl=on"
+          # Non-OpenGL version:
+          # "-device virtio-vga"
+          # "-display gtk"
+        ];
 
-      qemu.options = lib.mkIf cfg.graphicalVM [
-        # sdl might be better than gtk on Nvidia
-        "-device virtio-vga-gl"
-        "-display gtk,gl=on"
-        # Non-OpenGL version:
-        # "-device virtio-vga"
-        # "-display gtk"
-      ];
+        # Forward all TCP and UDP ports that are opened in the firewall on
+        # the default interfaces. Should make the majority of the VMs
+        # services accessible from host.
+        forwardPorts =
+          let
+            inherit (config.virtualisation.vmVariant.networking.firewall) allowedTCPPorts allowedUDPPorts;
 
-      # Forward all TCP and UDP ports that are opened in the firewall on
-      # the default interfaces. Should make the majority of the VMs
-      # services accessible from host.
-      forwardPorts =
-        let
-          inherit (config.virtualisation.vmVariant.networking.firewall) allowedTCPPorts allowedUDPPorts;
-
-          forward = proto: port: {
-            from = "host";
-            # If not mapped, attempt to map host port to a unique value between 50000-65000
-            host = {
-              port = (lib.mod port 15001) + 50000;
-              address = "127.0.0.1";
+            forward = proto: port: {
+              from = "host";
+              # If not mapped, attempt to map host port to a unique value between 50000-65000
+              host = {
+                port = (lib.mod port 15001) + 50000;
+                address = "127.0.0.1";
+              };
+              guest.port = port;
+              proto = proto;
             };
-            guest.port = port;
-            proto = proto;
-          };
-        in
-        map (forward "tcp") allowedTCPPorts ++ map (forward "udp") allowedUDPPorts;
+          in
+          map (forward "tcp") allowedTCPPorts ++ map (forward "udp") allowedUDPPorts;
+      };
     };
   };
 }
