@@ -10,7 +10,7 @@
   };
 
   hardware.nvidia = {
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    package = config.boot.kernelPackages.nvidiaPackages.beta;
     # Major issues if this is disabled
     modesetting.enable = true;
     open = true;
