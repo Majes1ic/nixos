@@ -3,17 +3,23 @@
   imports = [
     ./hardware-configuration.nix
     ./disko.nix
+
     ../../modules/core
+
     ../../modules/hardware/nvidia.nix
     ../../modules/hardware/audio.nix
     ../../modules/hardware/networking.nix
     ../../modules/hardware/secure-boot.nix
     ../../modules/hardware/wheel.nix
+
     ../../modules/system/firewall.nix
-    ../../modules/system/gnome.nix
+    #../../modules/system/gnome.nix
+    ../../modules/system/hyprland.nix
     ../../modules/system/ssh.nix
     ../../modules/system/virtualisation.nix
+
     ../../modules/programs/steam.nix
+
     ../../modules/services/llama.nix
   ];
 
