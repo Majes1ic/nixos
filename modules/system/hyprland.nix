@@ -136,7 +136,7 @@
 
     # Portal acts as medium for interactions between hyprland and backend services
     xdg.portal = {
-      enable = true;
+      enable = lib.mkForce true;
       extraPortals = with pkgs; [
         xdg-desktop-portal-hyprland
         xdg-desktop-portal-gtk
@@ -152,7 +152,7 @@
     programs.waybar = {
       enable = true;
       systemd.enable = true;
-      settings = {
+      settings.bar = {
         layer = "top";
         height = 41;
         margin = "0 0 0 0";
