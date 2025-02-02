@@ -76,6 +76,15 @@ in
     . "/etc/profiles/per-user/${username}/etc/profile.d/hm-session-vars.sh"
   '';
 
+  # Necessary for xdg-portal home-manager module to work with useUserPackages enabled
+  # https://github.com/nix-community/home-manager/pull/5184
+  # NOTE: When https://github.com/nix-community/home-manager/pull/2548 gets
+  # merged this may no longer be needed
+  environment.pathsToLink = [
+    "/share/xdg-desktop-portal"
+    "/share/applications"
+  ];
+
   home-manager.users.${username} = {
     wayland.windowManager.hyprland = {
       enable = true;
@@ -93,7 +102,7 @@ in
           cursor.enable_hyprcursor = false;
           decoration.rounding = 10;
 
-          binds =
+          bind =
             [
               "${mod}, H, movefocus, l"
               "${mod}, L, movefocus, r"
@@ -107,6 +116,8 @@ in
               "${mod}, Right, movewindow, r"
               "${mod}, Up, movewindow, u"
               "${mod}, Down, movewindow, d"
+              "${modShift}, Left, movetoworkspace, r-1"
+              "${modShift}, Right, movetoworkspace, r+1"
 
               "${mod}, W, killactive,"
               "${mod}, C, exec, togglefloating"
@@ -144,6 +155,8 @@ in
 
           bindr = [ "${mod}, ${mod}_L, exec, pkill fuzzel || fuzzel" ];
 
+          workspace = [ "special:social, gapsin:20, gapsout:20" ];
+
           windowrulev2 = [
             "workspace special:social silent, class:^(vesktop|discord)$, title:^(Discord.*)$"
             "workspace special:social silent, title:^(Spotify( Premium)?)$"
@@ -161,6 +174,7 @@ in
     # Portal acts as medium for interactions between hyprland and backend services
     xdg.portal = {
       enable = lib.mkForce true;
+      xdgOpenUsePortal = true;
       extraPortals = with pkgs; [
         xdg-desktop-portal-hyprland
         xdg-desktop-portal-gtk
