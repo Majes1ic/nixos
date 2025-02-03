@@ -59,8 +59,12 @@ in
   services.getty = {
     loginOptions = username;
     extraArgs = [ "--skip-login" ];
-    helpLine = lib.mkForce "";
   };
+
+  # Remove excess new lines and use normal green instead of bright
+  environment.etc.issue.text = ''
+    [0;32m${lib.replaceStrings [ "<<< " " >>>" ] [ "" "" ] config.services.getty.greetingLine}[0m
+  '';
 
   # Disable timeout as with --skip-login the default timeout of 60 seconds
   # causes it to repeatedly timeout indefinitely
