@@ -123,10 +123,10 @@ in
               "${modShift}, Left, movetoworkspace, r-1"
               "${modShift}, Right, movetoworkspace, r+1"
 
-              "${mod}, W, killactive,"
-              "${mod}, C, exec, togglefloating"
-              "${mod}, F, exec, fullscreen 1"
-              "${modShift}, F, exec, fullscreen 0"
+              "${mod}, W, killactive"
+              "${mod}, C, togglefloating"
+              "${mod}, F, fullscreen, 1"
+              "${modShift}, F, fullscreen, 0"
               "${modShiftCtrl}, Q, exec, loginctl terminate-session \"$XDG_SESSION_ID\""
 
               "${mod}, TAB, focusmonitor, +1"
@@ -158,6 +158,11 @@ in
             );
 
           bindr = [ "${mod}, ${mod}_L, exec, pkill fuzzel || fuzzel" ];
+
+          bindm = [
+            "${mod}, mouse:272, movewindow"
+            "${mod}, mouse:273, resizewindow"
+          ];
 
           workspace = [ "special:social, gapsin:20, gapsout:20" ];
 
