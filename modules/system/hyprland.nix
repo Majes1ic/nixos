@@ -104,7 +104,11 @@ in
         {
           input.accel_profile = "flat";
           cursor.enable_hyprcursor = false;
-          decoration.rounding = 10;
+
+          decoration = {
+            rounding = 10;
+            blur.special = true;
+          };
 
           bind =
             [
