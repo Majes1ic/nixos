@@ -3,6 +3,7 @@
   imports = [
     ./core.nix
     ./programs/vscode.nix
+    ../modules/system/dunst.nix
   ];
 
   home.packages =
@@ -20,7 +21,7 @@
       qpwgraph # audio piping (patch panel)
       lua
       zed-editor
-      gnomeExtensions.easyeffects-preset-selector
+      #      gnomeExtensions.easyeffects-preset-selector
       easyeffects
       jellyfin-mpv-shim
       jellyfin-media-player
@@ -31,7 +32,9 @@
       chromium
       tor
       tor-browser
-      teamspeak5_client
+      #      teamspeak5_client
+      chatterino7
+      yazi
     ]
     ++ [
 
