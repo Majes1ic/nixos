@@ -139,8 +139,9 @@ in
               "${mod}SHIFT, Space, workspace, emptym"
               "${mod}SHIFT, Space, exec, uwsm app firefox.desktop"
 
-              "${mod}, S, togglespecialworkspace, social"
-              "${modShift}, S, movetoworkspacesilent, special:social"
+              "${mod}, D, togglespecialworkspace, social"
+              "${modShift}, D, movetoworkspacesilent, special:social"
+              "${modShift}, S, exec, hyprshot -m region --clipboard-only"
             ]
             ++ lib.flatten (
               lib.genList (
@@ -247,6 +248,8 @@ in
     # Hyprpaper needs a config file otherwise it core dumps
     xdg.configFile."hypr/hyprpaper.conf".text = ''
       ipc=true
+      preload = /home/tom/Pictures/wallpaper-0.png
+      wallpaper = , /home/tom/Pictures/wallpaper-0.png
     '';
 
     systemd.user.services.hyprpaper = {
@@ -265,4 +268,7 @@ in
       Install.WantedBy = [ "graphical-session.target" ];
     };
   };
+  environment.systemPackages = with pkgs; [
+    hyprshot
+  ];
 }
