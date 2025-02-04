@@ -164,7 +164,7 @@ in
             "${mod}, mouse:273, resizewindow"
           ];
 
-          workspace = [ "special:social, gapsin:20, gapsout:20" ];
+          workspace = [ "special:social, gapsin:20, gapsout:40" ];
 
           windowrulev2 = [
             "workspace special:social silent, class:^(vesktop|discord)$, title:^(Discord.*)$"
