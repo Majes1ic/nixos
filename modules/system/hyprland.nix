@@ -102,6 +102,11 @@ in
           modShiftCtrl = "${mod}SHIFTCONTROL";
         in
         {
+          monitor = [
+            "HDMI-A-1, 3840x2160@120, 1920x0, 1"
+            "DP-2, 2560x1440@75, 0x2160, 1"
+            "DP-3, 2560x1440@360, 2560x2160, 1"
+          ];
           input.accel_profile = "flat";
           cursor.enable_hyprcursor = false;
 
@@ -208,6 +213,11 @@ in
         layer = "top";
         height = 24;
         margin = "0 0 0 0";
+
+        clock = {
+          interval = 1;
+          format = "{:%H:%M:%S}";
+        };
 
         "hyprland/workspaces" = { };
         "hyprland/window" = {
