@@ -271,8 +271,8 @@ in
 
       Install.WantedBy = [ "graphical-session.target" ];
     };
+    home.packages = [
+      pkgs.hyprshot
+    ];
   };
-  environment.systemPackages = with pkgs; [
-    hyprshot
-  ];
 }
