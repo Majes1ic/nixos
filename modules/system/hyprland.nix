@@ -222,7 +222,22 @@ in
           color: #ffffff;
         }
 
-        #workspaces,
+        #workspaces button {
+          padding: 0 10px;
+          background: #000000;
+          color: #666666;  /* This is the default, unselected workspace color */
+        }
+
+        #workspaces button.active {
+          color: #ffffff;  /* This makes the active workspace bright white */
+          font-weight: bold;  /* Makes the active workspace number bold */
+        }
+
+        #workspaces button:hover {
+          background: #1a1a1a;  /* Subtle background change on hover */
+          color: #ffffff;  /* Brightens the workspace number on hover */
+        }
+
         #window,
         #clock,
         #cpu,
