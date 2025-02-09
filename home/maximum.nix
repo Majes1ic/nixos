@@ -3,7 +3,6 @@
   imports = [
     ./core.nix
     ./programs/vscode.nix
-    ../modules/system/dunst.nix
   ];
 
   home.packages =
