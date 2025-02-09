@@ -209,6 +209,29 @@ in
     programs.waybar = {
       enable = true;
       systemd.enable = true;
+      style = ''
+        * {
+          border: none;
+          border-radius: 0;
+          font-family: monospace;
+          min-height: 0;
+        }
+
+        window#waybar {
+          background: #000000;
+          color: #ffffff;
+        }
+
+        #workspaces,
+        #window,
+        #clock,
+        #cpu,
+        #memory,
+        #tray {
+          background: #000000;
+          padding: 0 10px;
+        }
+      '';
       settings.bar = {
         layer = "top";
         height = 24;
@@ -231,7 +254,6 @@ in
         ];
         modules-center = [ "clock" ];
         modules-right = [
-          "network"
           "cpu"
           "memory"
           "tray"
@@ -242,6 +264,80 @@ in
     systemd.user.services.waybar = {
       Unit.After = lib.mkForce [ "graphical-session.target" ];
       Service.Slice = "app-graphical.slice";
+    };
+
+    services.dunst = {
+      enable = true;
+      settings = {
+        # Global settings for notifications
+        global = {
+          # Display settings
+          monitor = 0;
+          follow = "none";
+          width = 400;
+          height = 300;
+          origin = "top-right";
+          offset = "20x50";
+          scale = 0;
+          notification_limit = 20;
+
+          # Progress bar settings
+          progress_bar = true;
+          progress_bar_height = 10;
+          progress_bar_frame_width = 1;
+          progress_bar_min_width = 150;
+          progress_bar_max_width = 300;
+
+          # Theme settings that match your black theme
+          frame_width = 2;
+          frame_color = "#000000";
+          separator_height = 10;
+          separator_color = "#666666";
+          padding = 12;
+          horizontal_padding = 12;
+          gap_size = 8;
+          text_icon_padding = 0;
+
+          # Font configuration
+          font = "monospace 10";
+          line_height = 0;
+          markup = "full";
+          format = "<b>%s</b>\n%b";
+          alignment = "left";
+          vertical_alignment = "center";
+
+          # Appearance tweaks
+          icon_position = "left";
+          min_icon_size = 32;
+          max_icon_size = 128;
+          corner_radius = 0; # Square corners to match waybar
+
+          # Behavior settings
+          sort = true;
+          idle_threshold = 120;
+          show_age_threshold = 60;
+        };
+
+        # Styling for urgent notifications
+        urgency_low = {
+          background = "#000000";
+          foreground = "#ffffff";
+          timeout = 10;
+        };
+
+        urgency_normal = {
+          background = "#000000";
+          foreground = "#ffffff";
+          timeout = 10;
+        };
+
+        urgency_critical = {
+          background = "#000000";
+          foreground = "#ff0000"; # Red text for critical notifications
+          frame_color = "#ff0000"; # Red frame for critical notifications
+          timeout = 0; # Don't auto-dismiss critical notifications
+        };
+      };
     };
 
     gtk = {
