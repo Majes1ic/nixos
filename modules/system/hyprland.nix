@@ -110,9 +110,48 @@ in
           input.accel_profile = "flat";
           cursor.enable_hyprcursor = false;
 
+          general = {
+            border_size = 2;
+            gaps_out = 10;
+            resize_on_border = true;
+          };
+
           decoration = {
             rounding = 10;
-            blur.special = true;
+            blur = {
+              enabled = true;
+              special = true;
+              size = 2;
+              passes = 3;
+            };
+          };
+
+          layerrule = [ "blur, launcher" ];
+
+          animations = {
+            enabled = true;
+
+            bezier = [
+              "easeInOutQuart,0.76,0,0.24,1"
+              "fluentDecel, 0, 0.2, 0.4, 1"
+              "easeOutCirc, 0, 0.55, 0.45, 1"
+              "easeOutCubic, 0.33, 1, 0.68, 1"
+              "easeinoutsine, 0.37, 0, 0.63, 1"
+              "easeOutQuint, 0.23, 1, 0.32, 1"
+            ];
+
+            animation = [
+              "windowsIn, 1, 3, easeOutCubic, popin 30%"
+              "windowsOut, 1, 3, fluentDecel, popin 70%"
+              "windowsMove, 1, 4, easeOutQuint"
+              "fadeIn, 1, 3, easeOutCubic"
+              "fadeOut, 1, 1.7, easeOutCubic"
+              "fadeSwitch, 0, 1, easeOutCirc"
+              "fadeDim, 1, 4, fluentDecel"
+              "workspaces, 1, 3, easeOutCubic, slide"
+              "specialWorkspace, 1, 3, easeOutCubic, slidevert"
+              "layers, 1, 4, easeOutQuint"
+            ];
           };
 
           bind =
@@ -203,7 +242,50 @@ in
 
     programs.fuzzel = {
       enable = true;
-      settings.main.launch-prefix = "uwsm app --";
+      settings = {
+        main = {
+          launch-prefix = "uwsm app --";
+          terminal = "kitty";
+
+          # Width of the launcher window
+          width = 50; # This is a percentage of screen width
+          # Number of entries to display
+          lines = 15;
+
+          # Horizontal padding inside the launcher window
+          horizontal-pad = 20;
+          # Vertical padding inside the launcher window
+          vertical-pad = 10;
+
+          # Font settings
+          font = "monospace:size=12"; # Using monospace to match Waybar
+          line-height = 20; # Gives some breathing room between entries
+        };
+
+        colors = {
+          # Background of the launcher window with transparency
+          background = "00000088"; # Pure black, fully opaque
+
+          # Text color for entries
+          text = "777777"; # Grey
+
+          # Color of matching text when searching
+          match = "ffffffff"; # Red to highlight matching characters
+
+          # Selected entry background and text
+          selection = "1a1a1aff"; # Dark gray for selected item background
+          selection-text = "ffffffff"; # White text for selected item
+
+          # Border color
+          border = "666666ff"; # Gray border to match the theme
+        };
+
+        border = {
+          # Border settings
+          width = 2; # 2px border to match Dunst's frame width
+          radius = 0; # Square corners to match Waybar and Dunst
+        };
+      };
     };
 
     programs.waybar = {
@@ -213,7 +295,7 @@ in
         * {
           border: none;
           border-radius: 0;
-          font-family: monospace;
+          font-family: FiraCode Nerd Font Mono;
           min-height: 0;
         }
 
@@ -225,7 +307,7 @@ in
         #workspaces button {
           padding: 0 10px;
           background: #000000;
-          color: #666666;  /* This is the default, unselected workspace color */
+          color: #777777;  /* This is the default, unselected workspace color */
         }
 
         #workspaces button.active {
@@ -253,8 +335,21 @@ in
         margin = "0 0 0 0";
 
         clock = {
-          interval = 1;
-          format = "{:%H:%M:%S}";
+          interval = 10;
+          format = "{:%a %d %m %H:%M}";
+        };
+
+        cpu = {
+          format = " {usage}%";
+        };
+
+        memory = {
+          format = " {percentage}%";
+        };
+
+        tray = {
+          spacing = 14;
+          show-passive-items = true;
         };
 
         "hyprland/workspaces" = { };
