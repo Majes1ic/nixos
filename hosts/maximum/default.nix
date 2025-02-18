@@ -20,7 +20,7 @@
 
     ../../modules/programs/steam.nix
 
-    ../../modules/services/llama.nix
+    # ../../modules/services/llama.nix
   ];
 
   custom.virtualisation.graphicalVM = true;
