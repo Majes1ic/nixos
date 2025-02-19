@@ -17,7 +17,7 @@
     ../../modules/services/air-vpn.nix
     ../../modules/services/file-server.nix
     ../../modules/services/calibre.nix
-    ../../modules/services/music.nix
+    #../../modules/services/music.nix
     #    ../../modules/services/matrix.nix
     #    ../../modules/services/teamspeak3.nix
   ];
