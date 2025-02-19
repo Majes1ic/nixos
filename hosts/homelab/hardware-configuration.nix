@@ -62,6 +62,7 @@
       peers = [
         {
           publicKey = "PbFraM0QgSnR1h+mGwqeAl6e7zrwGuNBdAmxbnSxtms=";
+          presharedKeyFile = "/etc/wireguard/discord-presharedKeyFile.txt";
           allowedIPs = [ "10.0.0.0/24" ];
           endpoint = "he908z488kp.sn.mynetname.net:13232";
           persistentKeepalive = 25;
