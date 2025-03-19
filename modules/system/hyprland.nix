@@ -189,7 +189,11 @@ in
 
               "${mod}, D, togglespecialworkspace, social"
               "${modShift}, D, movetoworkspacesilent, special:social"
+
               "${modShift}, S, exec, hyprshot -m region --clipboard-only"
+
+              "${mod}, G, workspace, name:game"
+              "${modShift}, G, movetoworkspace, name:game"
             ]
             ++ lib.flatten (
               lib.genList (
@@ -213,10 +217,13 @@ in
             "${mod}, mouse:273, resizewindow"
           ];
 
-          workspace = [ "special:social, gapsin:20, gapsout:40" ];
+          workspace = [
+            "special:social, gapsin:20, gapsout:40"
+            "name:game, monitor:DP-3"
+          ];
 
           windowrulev2 = [
-            "workspace special:social silent, class:^(vesktop|discord)$, title:^(Discord.*)$"
+            "workspace special:social silent, class:^(vesktop|discord)$"
             "workspace special:social silent, title:^(Spotify( Premium)?)$"
           ];
         };
