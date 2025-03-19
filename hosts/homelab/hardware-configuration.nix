@@ -59,6 +59,7 @@
       address = [ "10.0.0.9/24" ];
       autostart = true;
       privateKeyFile = "home/${username}/.wireguard/privatekey";
+      listenPort = 51821;
       peers = [
         {
           publicKey = "PbFraM0QgSnR1h+mGwqeAl6e7zrwGuNBdAmxbnSxtms=";
