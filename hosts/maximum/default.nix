@@ -18,6 +18,7 @@
     ../../modules/system/ssh.nix
     ../../modules/system/virtualisation.nix
 
+    ../../modules/programs/audio.nix
     ../../modules/programs/steam.nix
 
     # ../../modules/services/llama.nix
