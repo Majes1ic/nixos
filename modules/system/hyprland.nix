@@ -163,7 +163,9 @@ in
               "${modShift}, J, workspace, m-1"
               "${modShift}, K, workspace, m+1"
               "${mod}, mouse:275, workspace, m-1"
+              "${mod}, mouse_down, workspace, e-1"
               "${mod}, mouse:276, workspace, m+1"
+              "${mod}, mouse_up, workspace, e+1"
               "${mod}, Left, movewindow, l"
               "${mod}, Right, movewindow, r"
               "${mod}, Up, movewindow, u"
@@ -194,6 +196,8 @@ in
 
               "${mod}, G, workspace, name:game"
               "${modShift}, G, movetoworkspace, name:game"
+
+              #"${mod}, ctrl, G,
             ]
             ++ lib.flatten (
               lib.genList (
@@ -389,7 +393,7 @@ in
         # Global settings for notifications
         global = {
           # Display settings
-          monitor = 0;
+          monitor = 1;
           follow = "none";
           width = 400;
           height = 300;
