@@ -1,4 +1,9 @@
-{ pkgs, ... }:
+{
+  pkgs,
+  cfg,
+  config,
+  ...
+}:
 {
   imports = [
     ./core.nix
@@ -65,6 +70,7 @@
       gnumake
       gcc
       luajit
+      tree-sitter
     ];
   };
 
@@ -104,7 +110,12 @@
     config = {
       profile = "gpu-hq";
       hwdec = "auto";
+      volume = "50";
     };
+  };
+
+  xdg.configFile = {
+    "jellyfin-mpv-shim/mpv.conf".source = config.xdg.configFile."mpv/mpv.conf".source;
   };
 
   programs.mangohud = {
