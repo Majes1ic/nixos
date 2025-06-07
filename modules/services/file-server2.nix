@@ -1,5 +1,3 @@
-{ config, pkgs, ... }:
-
 {
   # Enable the File Browser service
   services.filebrowser = {
@@ -13,16 +11,6 @@
       port = 8099;
     };
   };
-
-  # Create user/group for filebrowser
-  users.users.filebrowser = {
-    isSystemUser = true;
-    home = "/var/lib/filebrowser";
-    createHome = true;
-    group = "filebrowser";
-  };
-
-  users.groups.filebrowser = { };
 
   # Ensure the directory exists and is writable
   systemd.tmpfiles.rules = [
