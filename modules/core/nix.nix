@@ -37,15 +37,13 @@
   # Generate rebuild command scripts
   environment.systemPackages =
     let
-      inherit (lib) optional optionalString concatStringsSep;
+      inherit (lib) optionals optionalString concatStringsSep;
       configDir = "/home/${username}/.config/nixos";
       rebuildCmds = [
         "switch"
         "test"
         "boot"
         "build"
-        "dry-build"
-        "dry-activate"
         "diff"
       ];
 
@@ -53,21 +51,18 @@
         cmd:
         pkgs.writeShellApplication {
           name = "rebuild-${cmd}";
-          runtimeInputs = [ pkgs.nixos-rebuild ] ++ optional (cmd == "diff") pkgs.nvd;
-          text = # bash
-            ''
-              flake="${configDir}"
-              if [ ! -d $flake ]; then
-                echo "Flake does not exist locally so using remote from github"
-                flake="git+ssh://git@github.com/Majes1ic/NixOS.git"
-              fi
-              trap "popd >/dev/null 2>&1 || true" EXIT
-              pushd ~ >/dev/null 2>&1
+          runtimeInputs = [ pkgs.nh ];
+          text = ''
+            flake="${configDir}"
+            if [ ! -d $flake ]; then
+              echo "Flake does not exist locally so using remote from github"
+              flake="git+ssh://git@github.com/Majes1ic/NixOS.git"
+            fi
 
-              nixos-rebuild ${if (cmd == "diff") then "build" else cmd} \
-                --use-remote-sudo --flake "$flake#${hostname}" ${optionalString (cmd != "boot") "--fast"} "$@"
-              ${optionalString (cmd == "diff") "nvd diff /run/current-system result"}
-            '';
+            nh os ${
+              if (cmd == "diff") then "build" else cmd
+            } "$flake" --hostname ${hostname} --out-link ~/result-${hostname} "$@"
+          '';
         }
       ) rebuildCmds;
 
@@ -77,13 +72,13 @@
           validation = # bash
             ''
               if [ "$#" = 0 ]; then
-                echo "Usage: host-rebuild-${cmd} <hostname>"
+                echo "Usage: host-rebuild-${cmd} <hostname>${optionalString (cmd != "build") " <ip-address>"}"
                 exit 1
               fi
 
               hostname=$1
-              # shellcheck disable=SC2034
-              ip=$2
+              ${optionalString (cmd != "build") "ip=$2"}
+
               if [[ "$hostname" == "${hostname}" ]]; then
                 echo "Error: Cannot ${cmd} remotely on local host"
                 exit 1
@@ -109,41 +104,36 @@
               fi
 
               # Always build and store result to prevent GC deleting builds for remote hosts
-              remote_builds="/home/${username}/.remote-builds/$hostname"
+              remote_builds="/home/${username}/.remote-builds"
               mkdir -p "$remote_builds"
-              trap "popd >/dev/null 2>&1 || true" EXIT
-              pushd "$remote_builds" >/dev/null 2>&1
-              nixos-rebuild build --flake "$flake#$hostname" ${optionalString (cmd != "boot") "--fast"} "''${@:3}"
             '';
         in
         pkgs.writeShellApplication {
           name = "host-rebuild-${cmd}";
-          runtimeInputs = with pkgs; [
-            nixos-rebuild
-            openssh
-            nvd
-          ];
+          runtimeInputs =
+            [ pkgs.nh ]
+            ++ optionals (cmd == "diff") [
+              pkgs.nix
+              pkgs.openssh
+              pkgs.dix
+            ];
           text =
             validation
             + (
-              if (cmd == "diff") then # bash
+              if (cmd == "build" || cmd == "diff") then
                 ''
-                  if [ ! -d "${configDir}" ]; then
-                    echo "rebuild-diff requires the flake to exist locally in ${configDir}"
-                    exit 1
-                  fi
-
-                  remote_system=$(ssh "${username}@$ip" readlink /run/current-system)
-                  nixos_system=$(readlink "$remote_builds/result")
-                  nix-copy-closure --from "$ip" "$remote_system"
-                  nvd --color always diff "$remote_system" "$nixos_system"
+                  nh os build "$flake" --hostname "$hostname" --out-link "$remote_builds/result-$hostname" "''${@:3}"
+                  ${optionalString (cmd == "diff") ''
+                    remote_system=$(ssh "root@$ip" readlink /run/current-system)
+                    built_system=$(readlink "$remote_builds/result-$hostname")
+                    nix copy --from "ssh://$ip" "$remote_system"
+                    dix "$remote_system" "$built_system"
+                  ''}
                 ''
               else
-                optionalString (cmd != "build") # bash
-                  ''
-                    nixos-rebuild ${cmd} ${optionalString (cmd != "boot") "--fast"} \
-                      --use-remote-sudo --flake "$flake#$hostname" --target-host "root@$ip" "''${@:3}"
-                  ''
+                ''
+                  nh os ${cmd} "$flake" --hostname "$hostname" --out-link "$remote_builds/result-$hostname" --target-host "root@$ip" "''${@:3}"
+                ''
             );
         }
       ) rebuildCmds;
