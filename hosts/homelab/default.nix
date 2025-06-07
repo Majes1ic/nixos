@@ -16,6 +16,7 @@
     ../../modules/services/qbittorrent-nox.nix
     ../../modules/services/air-vpn.nix
     ../../modules/services/file-server.nix
+    ../../modules/services/file-server2.nix
     ../../modules/services/calibre.nix
     ../../modules/services/dashy.nix
     ../../modules/services/coop_minesweeper.nix
