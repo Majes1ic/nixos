@@ -18,6 +18,7 @@
       xdg-utils # because vs code doesn't work without it
       vesktop # discord client
       discord
+      mumble
       prismlauncher
       bitwarden-desktop
       stremio

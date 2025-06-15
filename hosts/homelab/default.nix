@@ -20,6 +20,7 @@
     ../../modules/services/calibre.nix
     ../../modules/services/dashy.nix
     ../../modules/services/coop_minesweeper.nix
+    ../../modules/services/mumble-server.nix
     #../../modules/services/music.nix
     #    ../../modules/services/matrix.nix
     #    ../../modules/services/teamspeak3.nix
