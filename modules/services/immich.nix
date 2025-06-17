@@ -12,7 +12,7 @@
     "https://nix-community.cachix.org"
   ];
   nix.settings.trusted-public-keys = [
-    "nix-community.cachix.org-1:...your key here..."
+    "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
   ];
 
   custom.services.caddy.virtualHosts."photos.494203.xyz".extraConfig = ''
