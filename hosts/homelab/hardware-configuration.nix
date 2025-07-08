@@ -72,6 +72,24 @@
     };
   };
 
+  services.prometheus.exporters.node = {
+    enable = true;
+    port = 9100;
+    enabledCollectors = [
+      "logind"
+      "systemd"
+    ];
+    disabledCollectors = [
+      "textfile"
+    ];
+  };
+
+  networking.firewall.interfaces = {
+    # wg-discord.allowedTCPPorts = [ 22 ];
+    wg-home.allowedTCPPorts = [ 9100 ];
+    enp34s0.allowedTCPPorts = [ 9100 ];
+  };
+
   programs.zsh.shellAliases = {
     wg-discord-up = "sudo systemctl start wg-quick-wg-discord";
     wg-discord-down = "sudo systemctl stop wg-quick-wg-discord";

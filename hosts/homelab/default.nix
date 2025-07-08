@@ -21,6 +21,8 @@
     ../../modules/services/dashy.nix
     ../../modules/services/coop_minesweeper.nix
     ../../modules/services/mumble-server.nix
+    ../../modules/services/monitoring.nix
+    #../../modules/services/zabbix.nix
     #../../modules/services/music.nix
     #    ../../modules/services/matrix.nix
     #    ../../modules/services/teamspeak3.nix
