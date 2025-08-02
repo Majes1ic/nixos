@@ -3,7 +3,7 @@
     enable = true;
     exporters.blackbox = {
       enable = true;
-      #configFile = ./modules/services/blackbox.yml;
+      configFile = ./blackbox.yml;
     };
     scrapeConfigs = [
       {
