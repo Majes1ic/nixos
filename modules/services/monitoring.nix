@@ -14,14 +14,42 @@
           }
         ];
       }
-
       {
-        job_name = "blackbox_http";
+        job_name = "blackbox_http_jellyfin";
         metrics_path = "/probe";
         params.module = [ "http_2xx" ];
         static_configs = [
           {
-            targets = [ "http://192.168.54.10:8096" ]; # Jellyfin
+            targets = [
+              "http://192.168.88.253:8096" # Jellyfin
+              "http://192.168.88.253:9088" # Books
+              "http://192.168.88.253:8099" # Files
+              "http://192.168.88.253:8087" # qbittorrent
+            ]; # Jellyfin
+          }
+        ];
+        relabel_configs = [
+          {
+            source_labels = [ "__address__" ];
+            target_label = "__param_target";
+          }
+          {
+            source_labels = [ "__param_target" ];
+            target_label = "instance";
+          }
+          {
+            target_label = "__address__";
+            replacement = "localhost:9115"; # Blackbox exporter on same host
+          }
+        ];
+      }
+      {
+        job_name = "blackbox_http_books";
+        metrics_path = "/probe";
+        params.module = [ "http_2xx" ];
+        static_configs = [
+          {
+            targets = [ "https://books.494203.xyz" ]; # Jellyfin
           }
         ];
         relabel_configs = [
@@ -45,7 +73,7 @@
         params.module = [ "tcp_connect" ];
         static_configs = [
           {
-            targets = [ "192.168.54.20:25565" ]; # Minecraft
+            targets = [ "192.168.88.253:25565" ]; # Minecraft
           }
         ];
         relabel_configs = [
