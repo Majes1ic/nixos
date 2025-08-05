@@ -22,7 +22,10 @@
           {
             targets = [
               "http://192.168.88.253:8096" # Jellyfin
+              "https://jellyfin.494203.xyz" # jellyfin_test
               "http://192.168.88.253:9088" # Books
+              "https://books.494203.xyz" # Books
+              "https://test.494203.xyz" # test
               "http://192.168.88.253:8099" # Files
               "http://192.168.88.253:8087" # qbittorrent
             ]; # Jellyfin
