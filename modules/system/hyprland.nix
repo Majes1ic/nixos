@@ -57,14 +57,14 @@ in
 
   # automatically populate with primary user whilst still prompting for password
   services.getty = {
-    loginOptions = username;
-    extraArgs = [ "--skip-login" ];
+    autologinUser = "tom";
+    #loginOptions = username;
+    #extraArgs = [ "--skip-login" ];
   };
-
   # Remove excess new lines and use normal green instead of bright
-  environment.etc.issue.text = ''
-    [0;32m${lib.replaceStrings [ "<<< " " >>>" ] [ "" "" ] config.services.getty.greetingLine}[0m
-  '';
+  #environment.etc.issue.text = ''
+  #  [0;32m${lib.replaceStrings [ "<<< " " >>>" ] [ "" "" ] config.services.getty.greetingLine}[0m
+  #'';
 
   # Disable timeout as with --skip-login the default timeout of 60 seconds
   # causes it to repeatedly timeout indefinitely
@@ -154,65 +154,64 @@ in
             ];
           };
 
-          bind =
-            [
-              "${mod}, H, movefocus, l"
-              "${mod}, L, movefocus, r"
-              "${mod}, K, movefocus, u"
-              "${mod}, J, movefocus, d"
-              "${modShift}, J, workspace, m-1"
-              "${modShift}, K, workspace, m+1"
-              "${mod}, mouse:275, workspace, m-1"
-              "${mod}, mouse_down, workspace, e-1"
-              "${mod}, mouse:276, workspace, m+1"
-              "${mod}, mouse_up, workspace, e+1"
-              "${mod}, Left, movewindow, l"
-              "${mod}, Right, movewindow, r"
-              "${mod}, Up, movewindow, u"
-              "${mod}, Down, movewindow, d"
-              "${modShift}, Left, movetoworkspace, r-1"
-              "${modShift}, Right, movetoworkspace, r+1"
+          bind = [
+            "${mod}, H, movefocus, l"
+            "${mod}, L, movefocus, r"
+            "${mod}, K, movefocus, u"
+            "${mod}, J, movefocus, d"
+            "${modShift}, J, workspace, m-1"
+            "${modShift}, K, workspace, m+1"
+            "${mod}, mouse:275, workspace, m-1"
+            "${mod}, mouse_down, workspace, e-1"
+            "${mod}, mouse:276, workspace, m+1"
+            "${mod}, mouse_up, workspace, e+1"
+            "${mod}, Left, movewindow, l"
+            "${mod}, Right, movewindow, r"
+            "${mod}, Up, movewindow, u"
+            "${mod}, Down, movewindow, d"
+            "${modShift}, Left, movetoworkspace, r-1"
+            "${modShift}, Right, movetoworkspace, r+1"
 
-              "${mod}, W, killactive"
-              "${mod}, C, togglefloating"
-              "${mod}, F, fullscreen, 1"
-              "${modShift}, F, fullscreen, 0"
-              "${modShiftCtrl}, Q, exec, loginctl terminate-session \"$XDG_SESSION_ID\""
+            "${mod}, W, killactive"
+            "${mod}, C, togglefloating"
+            "${mod}, F, fullscreen, 1"
+            "${modShift}, F, fullscreen, 0"
+            "${modShiftCtrl}, Q, exec, loginctl terminate-session \"$XDG_SESSION_ID\""
 
-              "${mod}, TAB, focusmonitor, +1"
+            "${mod}, TAB, focusmonitor, +1"
 
-              "${mod}, Return, exec, uwsm app kitty.desktop"
-              "${mod}SHIFT, Return, workspace, emptym"
-              "${mod}SHIFT, Return, exec, uwsm app kitty.desktop"
+            "${mod}, Return, exec, uwsm app kitty.desktop"
+            "${mod}SHIFT, Return, workspace, emptym"
+            "${mod}SHIFT, Return, exec, uwsm app kitty.desktop"
 
-              "${mod}, Space, exec, uwsm app firefox.desktop"
-              "${mod}SHIFT, Space, workspace, emptym"
-              "${mod}SHIFT, Space, exec, uwsm app firefox.desktop"
+            "${mod}, Space, exec, uwsm app firefox.desktop"
+            "${mod}SHIFT, Space, workspace, emptym"
+            "${mod}SHIFT, Space, exec, uwsm app firefox.desktop"
 
-              "${mod}, D, togglespecialworkspace, social"
-              "${modShift}, D, movetoworkspacesilent, special:social"
+            "${mod}, D, togglespecialworkspace, social"
+            "${modShift}, D, movetoworkspacesilent, special:social"
 
-              "${modShift}, S, exec, hyprshot -m region --clipboard-only"
+            "${modShift}, S, exec, hyprshot -m region --clipboard-only"
 
-              "${mod}, G, workspace, name:game"
-              "${modShift}, G, movetoworkspace, name:game"
+            "${mod}, G, workspace, name:game"
+            "${modShift}, G, movetoworkspace, name:game"
 
-              #"${mod}, ctrl, G,
-            ]
-            ++ lib.flatten (
-              lib.genList (
-                x:
-                let
-                  key = toString x;
-                  w = toString (if x == 0 then 10 else x);
-                in
-                [
-                  "${mod}, ${key}, workspace, ${w}"
-                  "${modShift}, ${key}, movetoworkspace, ${w}"
-                  "${modShiftCtrl}, ${key}, movetoworkspacesilent, ${w}"
-                ]
-              ) 10
-            );
+            #"${mod}, ctrl, G,
+          ]
+          ++ lib.flatten (
+            lib.genList (
+              x:
+              let
+                key = toString x;
+                w = toString (if x == 0 then 10 else x);
+              in
+              [
+                "${mod}, ${key}, workspace, ${w}"
+                "${modShift}, ${key}, movetoworkspace, ${w}"
+                "${modShiftCtrl}, ${key}, movetoworkspacesilent, ${w}"
+              ]
+            ) 10
+          );
 
           bindr = [ "${mod}, ${mod}_L, exec, pkill fuzzel || fuzzel" ];
 
