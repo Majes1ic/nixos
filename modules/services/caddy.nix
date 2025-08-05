@@ -39,11 +39,20 @@ in
               }
               resolvers 1.1.1.1
             }
+            handle_errors {
+              respond 404
+            }
             ${virtualHost.extraConfig}
           '';
         }
       ) cfg.virtualHosts;
     };
+
+    custom.services.caddy.virtualHosts."*.494203.xyz".extraConfig = ''
+      handle {
+        respond "404 Not Found" 404
+      }
+    '';
 
     age.secrets.porkbunVars.file = ../../secrets/porkbunVars.age;
     systemd.services.caddy.serviceConfig.EnvironmentFile = config.age.secrets.porkbunVars.path;
