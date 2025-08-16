@@ -22,6 +22,7 @@
     ../../modules/services/coop_minesweeper.nix
     ../../modules/services/mumble-server.nix
     ../../modules/services/monitoring.nix
+    ../../modules/services/unifi.nix
     #../../modules/services/music.nix
     #    ../../modules/services/matrix.nix
     #    ../../modules/services/teamspeak3.nix
