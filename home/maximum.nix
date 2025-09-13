@@ -1,6 +1,5 @@
 {
   pkgs,
-  cfg,
   config,
   ...
 }:
@@ -21,7 +20,6 @@
       mumble
       prismlauncher
       bitwarden-desktop
-      stremio
       qbittorrent
       qpwgraph # audio piping (patch panel)
       lua
@@ -93,6 +91,7 @@
         cmakeFlags = [ ];
       })
     ];
+    package = pkgs.obs-studio.override { config.cudaSupport = true; };
   };
 
   programs.mpv = {
