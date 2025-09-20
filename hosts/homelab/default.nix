@@ -22,6 +22,7 @@
     ../../modules/services/mumble-server.nix
     ../../modules/services/monitoring.nix
     ../../modules/services/unifi.nix
+    ../../modules/services/binary_cache.nix
     #../../modules/services/music.nix
     #    ../../modules/services/matrix.nix
     #    ../../modules/services/teamspeak3.nix
