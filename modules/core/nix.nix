@@ -34,6 +34,15 @@
       experimental-features = "nix-command flakes";
       # save space by removing duplicate files from the store
       auto-optimise-store = true;
+
+      substituters = [
+        "https://cache.nixos.org"
+      ];
+      trusted-public-keys = [
+        "binarycache.494203.xyz:CfSvWl/8KpLc2FEU66baS1LRBIFjAAyktuCHhp19FoY="
+        "framework:k4FMD4ahWu/gKvNNlKBX4qYF/T3g7Y6w/RNl9yVupQY="
+        "ncase-m1:/e3XhA0ibPMvdkol3oom/LfvFsKlJw5f6GCL9j1AvNA="
+      ];
     };
 
     gc = {
