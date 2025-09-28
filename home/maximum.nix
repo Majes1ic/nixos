@@ -27,7 +27,7 @@
       #      gnomeExtensions.easyeffects-preset-selector
       easyeffects
       jellyfin-mpv-shim
-      jellyfin-media-player
+      #jellyfin-media-player
       lazygit
       bottles
       winbox4
