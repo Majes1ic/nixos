@@ -23,7 +23,7 @@
       qbittorrent
       qpwgraph # audio piping (patch panel)
       lua
-      zed-editor
+      #zed-editor
       #      gnomeExtensions.easyeffects-preset-selector
       easyeffects
       jellyfin-mpv-shim
@@ -38,6 +38,7 @@
       #      teamspeak5_client
       chatterino7
       yazi
+      linux-wallpaperengine
     ]
     ++ [
 
