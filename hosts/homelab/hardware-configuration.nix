@@ -29,7 +29,11 @@
   boot.supportedFilesystems.zfs = true;
 
   boot.zfs.pools.homelab-zpool.devNodes = "/dev/disk/by-label/homelab-zpool";
-  boot.zfs.extraPools = [ "homelab-zpool" ];
+  boot.zfs.pools.homelab-zpool-1.devNodes = "/dev/disk/by-label/homelab-zpool-1";
+  boot.zfs.extraPools = [
+    "homelab-zpool"
+    "homelab-zpool-1"
+  ];
 
   fileSystems."/" = {
     device = "/dev/disk/by-label/homelab-nixos";
