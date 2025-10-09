@@ -26,7 +26,8 @@
   # opening minecraft port for friends
   networking.firewall.interfaces."wg-discord".allowedTCPPorts = [ 25565 ];
 
-  custom.services.caddy.virtualHosts."rlcraft.494203.xyz".extraConfig = ''
-    reverse_proxy http://localhost:25565
-  '';
+  # below doesn't work as MC a TCP connection, which Caddy cannot handle
+  #custom.services.caddy.virtualHosts."rlcraft.494203.xyz".extraConfig = ''
+  #  reverse_proxy http://localhost:25565
+  #'';
 }
