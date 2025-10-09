@@ -24,6 +24,7 @@
     ../../modules/services/unifi.nix
     ../../modules/services/binary_cache.nix
     ../../modules/services/memos.nix
+    ../../modules/services/minecraftserver.nix
     #../../modules/services/music.nix
     #    ../../modules/services/matrix.nix
     #    ../../modules/services/teamspeak3.nix
