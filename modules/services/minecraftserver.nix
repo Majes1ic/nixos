@@ -11,13 +11,28 @@
   };
 
   systemd.services.minecraft-rlcraft = {
+    #disabling for now as I am playing gregcraft
+    enable = false;
     description = "RLCraft Minecraft Server";
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
 
     serviceConfig = {
       WorkingDirectory = "/var/lib/minecraft/rlcraft";
-      ExecStart = "${pkgs.jdk8}/bin/java -Xms6G -Xmx14G -jar forge-1.12.2-14.23.5.2860.jar nogui";
+      ExecStart = "${pkgs.jdk8_headless}/bin/java -Xms6G -Xmx14G -jar forge-1.12.2-14.23.5.2860.jar nogui";
+      User = "minecraft";
+      Restart = "on-failure";
+    };
+  };
+
+  systemd.services.minecraft-gregtech = {
+    description = "Gregtech Minecraft Server";
+    after = [ "network.target" ];
+    wantedBy = [ "multi-user.target" ];
+
+    serviceConfig = {
+      WorkingDirectory = "/var/lib/minecraft/gregtech";
+      ExecStart = "${pkgs.jdk21_headless}/bin/java -Xms6G -Xmx14G @java9args.txt -jar lwjgl3ify-forgePatches.jar nogui";
       User = "minecraft";
       Restart = "on-failure";
     };
