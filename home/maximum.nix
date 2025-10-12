@@ -18,7 +18,6 @@
       vesktop # discord client
       discord
       mumble
-      prismlauncher
       bitwarden-desktop
       qbittorrent
       qpwgraph # audio piping (patch panel)
@@ -39,6 +38,14 @@
       chatterino7
       yazi
       linux-wallpaperengine
+      (pkgs.prismlauncher.override {
+        jdks = [
+          jdk8
+          jdk17
+          jdk21
+          jdk25
+        ];
+      })
     ]
     ++ [
 
