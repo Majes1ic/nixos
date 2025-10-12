@@ -18,7 +18,7 @@
     wantedBy = [ "multi-user.target" ];
 
     serviceConfig = {
-      WorkingDirectory = "/var/lib/minecraft/rlcraft";
+      WorkingDirectory = "/data/services/minecraft/rlcraft";
       ExecStart = "${pkgs.jdk8_headless}/bin/java -Xms6G -Xmx14G -jar forge-1.12.2-14.23.5.2860.jar nogui";
       User = "minecraft";
       Restart = "on-failure";
@@ -31,7 +31,7 @@
     wantedBy = [ "multi-user.target" ];
 
     serviceConfig = {
-      WorkingDirectory = "/var/lib/minecraft/gregtech";
+      WorkingDirectory = "/data/services/minecraft/gregtech";
       ExecStart = "${pkgs.jdk25_headless}/bin/java -Xms6G -Xmx14G @java9args.txt -jar lwjgl3ify-forgePatches.jar nogui";
       User = "minecraft";
       Restart = "on-failure";
