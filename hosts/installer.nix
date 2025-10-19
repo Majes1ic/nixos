@@ -25,7 +25,7 @@
   networking.firewall.interfaces."wg-home".allowedTCPPorts = [ 22 ];
 
   users.users.root.openssh.authorizedKeys.keys = [
-    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFqX+SdocMJggapFzaSHcwcua4qU3VNjshhchJB0b5Lh tomawdry@proton.me"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHZ6ElOfDAOSAuRKSh8TOGmg9QQFbb1YLz5nRNZYCFqL one"
   ];
 
   system.stateVersion = "24.05";
