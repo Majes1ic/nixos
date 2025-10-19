@@ -12,8 +12,8 @@
       #  "qwen2.5:32b-instruct-q3_K_M"
       #  "mistral-small:22b-instruct-2409-q5_1"
       #   "hf.co/bartowski/DeepSeek-R1-Distill-Qwen-7B-GGUF"
-      "qwen3:4b"
       "gemma3:4b"
+      "gemma3:12b"
     ];
   };
   services.open-webui = {
