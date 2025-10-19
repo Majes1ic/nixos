@@ -33,6 +33,8 @@ in
     withUWSM = true;
   };
 
+  security.pam.services.hyprlock = { };
+
   # managed with home-manager
   xdg.portal.enable = lib.mkForce false;
 
@@ -230,6 +232,40 @@ in
             "workspace special:social silent, title:^(Spotify( Premium)?)$"
           ];
         };
+
+    };
+
+    services.hypridle = {
+      enable = true;
+      settings = {
+        general = {
+          lock_cmd = "pidof hyprlock || hyprlock"; # avoid starting multiple hyprlock instances.
+          before_sleep_cmd = "loginctl lock-session"; # lock before suspend.
+          after_sleep_cmd = "hyprctl dispatch dpms on"; # to avoid having to press a key twice to turn on the display.
+        };
+
+        listener = [
+          # FOR LAPTOP
+          #{
+          #  timeout = 150; # 2.5min.
+          #  on-timeout = "brightnessctl -s set 10"; # set monitor backlight to minimum, avoid 0 on OLED monitor.
+          #  on-resume = "brightnessctl -r"; # monitor backlight restore.
+          #}
+          {
+            timeout = 300; # 5min
+            on-timeout = "loginctl lock-session"; # lock screen when timeout has passed
+          }
+          {
+            timeout = 600; # 10min
+            on-timeout = "hyprctl dispatch dpms off"; # screen off when timeout has passed
+            on-resume = "hyprctl dispatch dpms on && brightnessctl -r"; # screen on when activity is detected after timeout has fired.
+          }
+          {
+            timeout = 900; # 15min
+            on-timeout = "systemctl suspend"; # suspend pc
+          }
+        ];
+      };
     };
 
     # Setting env vars for Nvidia as per wiki. Set in uwsm/env conf as this is recommended
@@ -497,8 +533,42 @@ in
 
       Install.WantedBy = [ "graphical-session.target" ];
     };
-    home.packages = [
-      pkgs.hyprshot
+
+    xdg.configFile."hypr/hyprlock.conf".text = ''
+
+
+      background {
+        monitor = DP-3
+        path = /home/tom/Pictures/wallpaper-0.png
+        blur_passes = 3
+      }
+
+      label {
+        text = Beep Boop
+        font_size = 20
+        halign = center
+        valign = top
+        position = 0, -100
+      }
+      input-field {
+        monitor = DP-3
+        size = 200, 50
+        outline_thickness = 2
+        dots_size = 0.3
+        dots_spacing = 0.2
+        fade_on_empty = true
+        placeholder_text = <i>Enter password...</i>
+        hide_input = false
+        position = 0, 0
+        valign = center
+        halign = center
+      }
+    '';
+
+    home.packages = with pkgs; [
+      hyprshot
+      hyprlock
+      brightnessctl
     ];
   };
 }
