@@ -182,9 +182,9 @@ in
 
             "${mod}, TAB, focusmonitor, +1"
 
-            "${mod}, Return, exec, uwsm app kitty.desktop"
+            "${mod}, Return, exec, uwsm app Alacritty.desktop"
             "${mod}SHIFT, Return, workspace, emptym"
-            "${mod}SHIFT, Return, exec, uwsm app kitty.desktop"
+            "${mod}SHIFT, Return, exec, uwsm app Alacritty.desktop"
 
             "${mod}, Space, exec, uwsm app firefox.desktop"
             "${mod}SHIFT, Space, workspace, emptym"
@@ -291,7 +291,7 @@ in
       settings = {
         main = {
           launch-prefix = "uwsm app --";
-          terminal = "kitty";
+          terminal = "alacritty";
 
           # Width of the launcher window
           width = 50; # This is a percentage of screen width

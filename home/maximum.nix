@@ -7,6 +7,7 @@
   imports = [
     ./core.nix
     ./programs/vscode.nix
+    ./programs/alacritty.nix
   ];
 
   home.packages =
