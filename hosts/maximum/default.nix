@@ -22,6 +22,7 @@
     ../../modules/programs/steam.nix
 
     ../../modules/services/llama.nix
+    ../../modules/services/sunshine.nix
   ];
 
   custom.virtualisation.graphicalVM = true;
@@ -54,20 +55,21 @@
       privateKeyFile = "/home/${username}/.wireguard/private";
 
       peers = [
-        # {
-        #   # laptop
-        #   publicKey = "T1EHPg4tkmQ1KFWGzspBYAkjzLL1JzWTNtPsSkObLUE=";
-        #   allowedIPs = [ "10.0.1.11/32" ];
-        # }
-        # {
-        #   # phone
-        #   publicKey = "xDDnUvzTcSGA4htsmYBSQykgLVv/MCEUwEKc+IOoL3w=";
-        #   allowedIPs = [ "10.0.1.3/32" ];
-        # }
+        #  {
+        #    # laptop
+        #    publicKey = "nlXSThJ4KDhpaEVeDgkvKyL5kopIgMqs2rmdg5VnmnU=";
+        #    allowedIPs = [ "10.0.1.11/32" ];
+        #  }
+        #  {
+        #    # phone
+        #    publicKey = "xDDnUvzTcSGA4htsmYBSQykgLVv/MCEUwEKc+IOoL3w=";
+        #    allowedIPs = [ "10.0.1.3/32" ];
+        #  }
         {
           publicKey = "RZu9z1llyyWIb/Bn4oxde299W1J0ZUIrGY5HZX2OgFI=";
-          allowedIPs = [ "10.0.1.1/24" ];
+          allowedIPs = [ "10.0.1.0/24" ];
           endpoint = "hh90a7hr8zt.sn.mynetname.net:51820";
+          persistentKeepalive = 60;
         }
       ];
     };
@@ -94,6 +96,16 @@
   };
 
   networking.hostId = "150ce5b1";
-  networking.firewall.defaultInterfaces = [ "enp3s0" ];
+  networking.firewall.defaultInterfaces = [ "wg-home" ];
   system.stateVersion = "23.05";
+
+  #temp beamMP
+  security.pki.certificateFiles = [
+    (pkgs.stdenvNoCC.mkDerivation {
+      name = "beammp-cert";
+      nativeBuildInputs = [ pkgs.curl ];
+      builder = pkgs.writeScript "beammp-cert-builder" "curl -w %{certs} https://auth.beammp.com/userlogin -k > $out";
+      outputHash = "sha256-8qyV7wLQBcpNUKasJFRb5BuPD87Orbpy3E5KFeWAkr0=";
+    })
+  ];
 }
