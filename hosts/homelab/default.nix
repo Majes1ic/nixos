@@ -26,7 +26,7 @@
     ../../modules/services/memos.nix
     ../../modules/services/minecraftserver.nix
     ../../modules/services/uptime-kuma.nix
-    ../../modules/services/jellyseer.nix
+    ../../modules/services/torrent-stack.nix
     #../../modules/services/music.nix
     #    ../../modules/services/matrix.nix
     #    ../../modules/services/teamspeak3.nix
