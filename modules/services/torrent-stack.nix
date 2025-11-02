@@ -28,6 +28,7 @@ in
   #collection manager
   services.radarr = {
     enable = true;
+    openFirewall = true;
   };
   systemd.services.radarr.serviceConfig.supplementaryGroups = [ "media" ];
   custom.services.caddy.virtualHosts."radarr.494203.xyz".extraConfig = ''
@@ -56,7 +57,7 @@ in
   };
 
   custom.services.caddy.virtualHosts."prowlarr.494203.xyz".extraConfig = ''
-    reverse_proxy localhost:${toString ports.prowlarr}";
+    reverse_proxy ${config.vpnNamespaces."air-vpn".namespaceAddress}:${toString ports.prowlarr}";
   '';
 
   #subtitle manager
@@ -83,5 +84,9 @@ in
     "d ${mediaDir}/shows 0775 root media - -"
     "d ${mediaDir}/books 0775 root media - -"
     "d ${mediaDir}/music 0775 root media - -"
+  ];
+
+  networking.firewall.interfaces."${vpnNamespace}-br".allowedTCPPorts = [
+    ports.radarr
   ];
 }
