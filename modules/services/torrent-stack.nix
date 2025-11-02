@@ -1,11 +1,11 @@
+# need to configure port forwarding
 {
-  lib,
   username,
   config,
 }:
 let
   mediaDir = "/data/media";
-  vpnNamespaceAddress = config.vpnNamespaces."air-vpn";
+  vpnNamespace = "air-vpn";
   ports = {
     jellyseer = 5055;
     bazarr = 6767;
@@ -14,68 +14,73 @@ let
     prowlarr = 9696;
   };
 in
-[
-  {
-    #request manager
-    services.jellyseerr = {
+{
+  #request manager
+  services.jellyseerr = {
+    enable = true;
+  };
+  systemd.services.jellyseerr.serviceConfig.supplementaryGroups = [ "media" ];
+  custom.services.caddy.virtualHosts."jellyseerr.494203.xyz".extraConfig = ''
+    reverse_proxy localhost:${toString ports.jellyseer}";
+  '';
+
+  #collection manager
+  services.radarr = {
+    enable = true;
+  };
+  systemd.services.radarr.serviceConfig.supplementaryGroups = [ "media" ];
+  custom.services.caddy.virtualHosts."radarr.494203.xyz".extraConfig = ''
+    reverse_proxy localhost:${toString ports.radarr}";
+  '';
+
+  #torrent finder
+  services.sonarr = {
+    enable = true;
+  };
+  custom.services.caddy.virtualHosts."sonarr.494203.xyz".extraConfig = ''
+    reverse_proxy localhost:${toString ports.sonarr}";
+  '';
+  systemd.services.sonarr.serviceConfig.supplementaryGroups = [ "media" ];
+
+  #torrent manager
+  services.prowlarr = {
+    enable = true;
+  };
+  systemd.services.prowlarr = {
+    serviceConfig.supplementaryGroups = [ "media" ];
+    vpnConfinement = {
       enable = true;
+      inherit vpnNamespace;
     };
-    systemd.services.jellyseerr.serviceConfig.supplementaryGroups = [ "media" ];
-    custom.services.caddy.virtualHosts."jellyseerr.494203.xyz".extraConfig = ''
-      reverse_proxy localhost:${toString ports.jellyseer}";
-    '';
+  };
 
-    #collection manager
-    services.radarr = {
-      enable = true;
-    };
-    systemd.services.radarr.serviceConfig.supplementaryGroups = [ "media" ];
-    custom.services.caddy.virtualHosts."radarr.494203.xyz".extraConfig = ''
-      reverse_proxy localhost:${toString ports.radarr}";
-    '';
+  custom.services.caddy.virtualHosts."prowlarr.494203.xyz".extraConfig = ''
+    reverse_proxy localhost:${toString ports.prowlarr}";
+  '';
 
-    #torrent finder
-    services.sonarr = {
-      enable = true;
-    };
-    custom.services.caddy.virtualHosts."sonarr.494203.xyz".extraConfig = ''
-      reverse_proxy localhost:${toString ports.sonarr}";
-    '';
-    systemd.services.sonarr.serviceConfig.supplementaryGroups = [ "media" ];
+  #subtitle manager
+  services.bazarr = {
+    enable = true;
+  };
+  systemd.services.bazarr.serviceConfig.supplementaryGroups = [ "media" ];
+  custom.services.caddy.virtualHosts."bazarr.494203.xyz".extraConfig = ''
+    reverse_proxy localhost:${toString ports.bazarr}";
+  '';
 
-    #torrent manager
-    services.prowlarr = {
-      enable = true;
-    };
-    systemd.services.prowlarr.serviceConfig.supplementaryGroups = [ "media" ];
-    custom.services.caddy.virtualHosts."prowlarr.494203.xyz".extraConfig = ''
-      reverse_proxy localhost:${toString ports.prowlarr}";
-    '';
+  users.groups.media = { };
+  users.users.${username}.extraGroups = [ "media" ];
 
-    #subtitle manager
-    services.bazarr = {
-      enable = true;
-    };
-    systemd.services.bazarr.serviceConfig.supplementaryGroups = [ "media" ];
-    custom.services.caddy.virtualHosts."bazarr.494203.xyz".extraConfig = ''
-      reverse_proxy localhost:${toString ports.bazarr}";
-    '';
-
-    users.groups.media = { };
-    users.users.${username}.extraGroups = [ "media" ];
-
-    systemd.tmpfiles.rules = [
-      "d ${mediaDir} 0770 root media - -"
-      # Torrents are downloaded and seeded here. They are hardlinked by the
-      # relevant arr service to a media dir.
-      "d ${mediaDir}/torrents 0775 root media - -"
-      "d ${mediaDir}/torrents/movies 0775 qbittorrent-nox qbittorrent-nox - -"
-      "d ${mediaDir}/torrents/shows 0775 qbittorrent-nox qbittorrent-nox - -"
-      "d ${mediaDir}/torrents/music 0775 qbittorrent-nox qbittorrent-nox - -"
-      "d ${mediaDir}/movies 0775 root media - -"
-      "d ${mediaDir}/shows 0775 root media - -"
-      "d ${mediaDir}/books 0775 root media - -"
-      "d ${mediaDir}/music 0775 root media - -"
-    ];
-  }
-]
+  systemd.tmpfiles.rules = [
+    "d ${mediaDir} 0770 root media - -"
+    # Torrents are downloaded and seeded here. They are hardlinked by the
+    # relevant arr service to a media dir.
+    "d ${mediaDir}/torrents 0775 root media - -"
+    "d ${mediaDir}/torrents/movies 0775 qbittorrent-nox qbittorrent-nox - -"
+    "d ${mediaDir}/torrents/shows 0775 qbittorrent-nox qbittorrent-nox - -"
+    "d ${mediaDir}/torrents/music 0775 qbittorrent-nox qbittorrent-nox - -"
+    "d ${mediaDir}/movies 0775 root media - -"
+    "d ${mediaDir}/shows 0775 root media - -"
+    "d ${mediaDir}/books 0775 root media - -"
+    "d ${mediaDir}/music 0775 root media - -"
+  ];
+}
