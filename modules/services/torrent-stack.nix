@@ -48,6 +48,7 @@ in
   services.prowlarr = {
     enable = true;
   };
+
   systemd.services.prowlarr = {
     serviceConfig.supplementaryGroups = [ "media" ];
     vpnConfinement = {
@@ -55,6 +56,14 @@ in
       inherit vpnNamespace;
     };
   };
+
+  # open prowlarr port from vpn network namespace
+  vpnNamespaces."air-vpn".portMappings = [
+    {
+      from = ports.prowlarr;
+      to = ports.prowlarr;
+    }
+  ];
 
   custom.services.caddy.virtualHosts."prowlarr.494203.xyz".extraConfig = ''
     reverse_proxy ${config.vpnNamespaces."air-vpn".namespaceAddress}:${toString ports.prowlarr}";
