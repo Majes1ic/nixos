@@ -2,6 +2,7 @@
 {
   username,
   config,
+  ...
 }:
 let
   mediaDir = "/data/media";
