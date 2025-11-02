@@ -35,7 +35,8 @@ in
       DynamicUser = false;
       User = "qbittorrent-nox";
       Group = "qbittorrent-nox";
-      UMask = "0022";
+      supplementaryGroups = [ "media" ];
+      UMask = "0000";
       StateDirectory = "qbittorrent-nox";
       StateDirectoryMode = "750";
       ExecStart = lib.getExe' pkgs.qbittorrent-nox "qbittorrent-nox";
