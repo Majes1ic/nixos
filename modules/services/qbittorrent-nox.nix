@@ -35,7 +35,7 @@ in
       DynamicUser = false;
       User = "qbittorrent-nox";
       Group = "qbittorrent-nox";
-      supplementaryGroups = [ "media" ];
+      SupplementaryGroups = [ "media" ];
       UMask = "0000";
       StateDirectory = "qbittorrent-nox";
       StateDirectoryMode = "750";

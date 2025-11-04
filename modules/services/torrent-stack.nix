@@ -20,9 +20,9 @@ in
   services.jellyseerr = {
     enable = true;
   };
-  systemd.services.jellyseerr.serviceConfig.supplementaryGroups = [ "media" ];
+  systemd.services.jellyseerr.serviceConfig.SupplementaryGroups = [ "media" ];
   custom.services.caddy.virtualHosts."jellyseerr.494203.xyz".extraConfig = ''
-    reverse_proxy localhost:${toString ports.jellyseer}";
+    reverse_proxy localhost:${toString ports.jellyseer}
   '';
 
   #collection manager
@@ -30,9 +30,9 @@ in
     enable = true;
     openFirewall = true;
   };
-  systemd.services.radarr.serviceConfig.supplementaryGroups = [ "media" ];
+  systemd.services.radarr.serviceConfig.SupplementaryGroups = [ "media" ];
   custom.services.caddy.virtualHosts."radarr.494203.xyz".extraConfig = ''
-    reverse_proxy localhost:${toString ports.radarr}";
+    reverse_proxy localhost:${toString ports.radarr}
   '';
 
   #torrent finder
@@ -40,9 +40,9 @@ in
     enable = true;
   };
   custom.services.caddy.virtualHosts."sonarr.494203.xyz".extraConfig = ''
-    reverse_proxy localhost:${toString ports.sonarr}";
+    reverse_proxy localhost:${toString ports.sonarr}
   '';
-  systemd.services.sonarr.serviceConfig.supplementaryGroups = [ "media" ];
+  systemd.services.sonarr.serviceConfig.SupplementaryGroups = [ "media" ];
 
   #torrent manager
   services.prowlarr = {
@@ -50,7 +50,7 @@ in
   };
 
   systemd.services.prowlarr = {
-    serviceConfig.supplementaryGroups = [ "media" ];
+    serviceConfig.SupplementaryGroups = [ "media" ];
     vpnConfinement = {
       enable = true;
       inherit vpnNamespace;
@@ -66,16 +66,16 @@ in
   ];
 
   custom.services.caddy.virtualHosts."prowlarr.494203.xyz".extraConfig = ''
-    reverse_proxy ${config.vpnNamespaces."air-vpn".namespaceAddress}:${toString ports.prowlarr}";
+    reverse_proxy ${config.vpnNamespaces."air-vpn".namespaceAddress}:${toString ports.prowlarr}
   '';
 
   #subtitle manager
   services.bazarr = {
     enable = true;
   };
-  systemd.services.bazarr.serviceConfig.supplementaryGroups = [ "media" ];
+  systemd.services.bazarr.serviceConfig.SupplementaryGroups = [ "media" ];
   custom.services.caddy.virtualHosts."bazarr.494203.xyz".extraConfig = ''
-    reverse_proxy localhost:${toString ports.bazarr}";
+    reverse_proxy localhost:${toString ports.bazarr}
   '';
 
   users.groups.media = { };
