@@ -4,7 +4,7 @@
     enable = true;
     # nvidia hardware acceleration
     extraPackages = with pkgs; [
-      vaapiVdpau
+      libva-vdpau-driver
       nvidia-vaapi-driver
       cudatoolkit
     ];
