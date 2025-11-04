@@ -32,6 +32,6 @@ in
   };
 
   custom.services.caddy.virtualHosts."music.494203.xyz".extraConfig = ''
-    reverse_proxy http://${config.vpnNamespaces.air-vpn.namespaceAddress}:${toString http_port}
+    reverse_proxy ${config.vpnNamespaces.air-vpn.namespaceAddress}:${toString http_port}
   '';
 }
