@@ -63,10 +63,6 @@ in
     #loginOptions = username;
     #extraArgs = [ "--skip-login" ];
   };
-  # Remove excess new lines and use normal green instead of bright
-  #environment.etc.issue.text = ''
-  #  [0;32m${lib.replaceStrings [ "<<< " " >>>" ] [ "" "" ] config.services.getty.greetingLine}[0m
-  #'';
 
   # Disable timeout as with --skip-login the default timeout of 60 seconds
   # causes it to repeatedly timeout indefinitely
@@ -75,7 +71,7 @@ in
   # If not ssh and uwsm is allowed to start, launch hyprland.desktop with uwsm
   environment.loginShellInit = lib.mkOrder 2000 ''
     if test -z $SSH_TTY && uwsm check may-start -q; then
-      exec uwsm start -S -- ${pkgs.hyprland}/share/wayland-sessions/hyprland.desktop >/dev/null
+      exec uwsm start ${pkgs.hyprland}/share/wayland-sessions/hyprland.desktop >/dev/null
     fi
 
     # ensure home-manager variables have precedence over system variables
