@@ -97,5 +97,6 @@ in
 
   networking.firewall.interfaces."${vpnNamespace}-br".allowedTCPPorts = [
     ports.radarr
+    ports.sonarr
   ];
 }
