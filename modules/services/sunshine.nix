@@ -3,7 +3,7 @@
 {
   services.sunshine = {
     enable = true;
-    #autoStart = true;
+    autoStart = false;
     package = pkgs.sunshine.override { cudaSupport = true; };
     openFirewall = true;
     capSysAdmin = true;
