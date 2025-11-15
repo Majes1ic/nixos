@@ -28,7 +28,8 @@
     ../../modules/services/uptime-kuma.nix
     ../../modules/services/torrent-stack.nix
     #../../modules/services/music.nix
-    #    ../../modules/services/matrix.nix
+    #../../modules/services/matrix.nix
+    ../../modules/services/matrix-tuwunel.nix
     #    ../../modules/services/teamspeak3.nix
   ];
 
