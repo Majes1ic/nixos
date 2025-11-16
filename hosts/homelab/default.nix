@@ -17,7 +17,6 @@
     ../../modules/services/air-vpn.nix
     ../../modules/services/file-server.nix
     ../../modules/services/calibre.nix
-    ../../modules/services/dashy.nix
     ../../modules/services/coop_minesweeper.nix
     ../../modules/services/mumble-server.nix
     ../../modules/services/monitoring.nix
@@ -27,10 +26,12 @@
     ../../modules/services/minecraftserver.nix
     ../../modules/services/uptime-kuma.nix
     ../../modules/services/torrent-stack.nix
+    ../../modules/services/matrix-tuwunel.nix
+    ../../modules/services/home-assistant.nix
     #../../modules/services/music.nix
     #../../modules/services/matrix.nix
-    ../../modules/services/matrix-tuwunel.nix
-    #    ../../modules/services/teamspeak3.nix
+    #../../modules/services/teamspeak3.nix
+    #../../modules/services/dashy.nix
   ];
 
   networking.hostId = "d48f462c";
