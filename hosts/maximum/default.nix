@@ -21,7 +21,7 @@
     ../../modules/programs/audio.nix
     ../../modules/programs/steam.nix
 
-    ../../modules/services/llama.nix
+    #../../modules/services/llama.nix
     ../../modules/services/sunshine.nix
   ];
 
