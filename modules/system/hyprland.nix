@@ -124,7 +124,7 @@ in
             };
           };
 
-          layerrule = [ "blur, launcher" ];
+          #layerrule = [ "blur, launcher" ];
 
           animations = {
             enabled = true;
@@ -223,9 +223,12 @@ in
             "name:game, monitor:DP-3"
           ];
 
-          windowrulev2 = [
-            "workspace special:social silent, class:^(vesktop|discord)$"
-            "workspace special:social silent, title:^(Spotify( Premium)?)$"
+          windowrule = [
+            "match:class discord, workspace special:social silent"
+            "match:content 3, workspace name:game silent, center on, fullscreen on"
+            "match:class ^(steam_app_.*|hl_linux|hl2_linux)$, workspace name:game silent, center on, fullscreen on"
+            #  "workspace special:social silent, title:^(Spotify( Premium)?)$"
+            #  "blur, class:^(fuzzel)$"
           ];
         };
 
