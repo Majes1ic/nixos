@@ -32,9 +32,11 @@
 
     serviceConfig = {
       WorkingDirectory = "/data/services/minecraft/gregtech";
-      ExecStart = "${pkgs.jdk25_headless}/bin/java -Xms6G -Xmx14G @java9args.txt -jar lwjgl3ify-forgePatches.jar nogui";
+      ExecStart = "${pkgs.jdk25_headless}/bin/java -Xms6G -Xmx8G @java9args.txt -jar lwjgl3ify-forgePatches.jar nogui";
       User = "minecraft";
       Restart = "on-failure";
+      MemoryHigh = "10G";
+      MemoryMax = "12G";
     };
   };
 
