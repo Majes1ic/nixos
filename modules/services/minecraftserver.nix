@@ -26,6 +26,7 @@
   };
 
   systemd.services.minecraft-gregtech = {
+    enable = false;
     description = "Gregtech Minecraft Server";
     after = [ "network.target" ];
     wantedBy = [ "multi-user.target" ];
