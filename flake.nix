@@ -27,10 +27,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hyprland = {
-      url = "github:hyprwm/Hyprland";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    #    hyprland = {
+    #      url = "github:hyprwm/Hyprland";
+    #      inputs.nixpkgs.follows = "nixpkgs";
+    #    };
 
     vpn-confinement.url = "github:Maroka-chan/VPN-Confinement";
   };

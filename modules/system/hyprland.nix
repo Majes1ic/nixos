@@ -11,16 +11,16 @@ let
 in
 {
   # use package from hyprland flake
-  nixpkgs.overlays = lib.singleton (
-    final: _: {
-      hyprland = inputs.hyprland.packages.${pkgs.system}.hyprland;
-      xdg-desktop-portal-hyprland =
-        inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland.override
-          {
-            inherit (final) hyprland;
-          };
-    }
-  );
+  #  nixpkgs.overlays = lib.singleton (
+  #    final: _: {
+  #      hyprland = inputs.hyprland.packages.${pkgs.system}.hyprland;
+  #      xdg-desktop-portal-hyprland =
+  #        inputs.hyprland.packages.${pkgs.system}.xdg-desktop-portal-hyprland.override
+  #          {
+  #            inherit (final) hyprland;
+  #          };
+  #    }
+  #  );
 
   # hyprland binary cache
   nix.settings = {
