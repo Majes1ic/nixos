@@ -7,14 +7,14 @@
     openFirewall = false; # We're proxying via Caddy
 
     settings = {
-      root = "/srv/caddyfileserver";
+      root = "/data/srv/caddyfileserver";
       port = 8099;
     };
   };
 
   # Ensure the directory exists and is writable
   systemd.tmpfiles.rules = [
-    "d /srv/caddyfileserver 0755 filebrowser filebrowser -"
+    "d /data/srv/caddyfileserver 0755 filebrowser filebrowser -"
     "d /var/cache/filebrowser 0755 filebrowser filebrowser -"
   ];
 
