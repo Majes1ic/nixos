@@ -4,7 +4,7 @@
 
   vpnNamespaces.air-vpn = {
     enable = true;
-    wireguardConfigFile = "/etc/wireguard/AirVPN_Swiss_Homelab.conf";
+    wireguardConfigFile = "/etc/wireguard/AirVPN_Netherlands_Homelab.conf";
     accessibleFrom = [ "127.0.0.1" ];
     namespaceAddress = "192.168.15.1";
   };
