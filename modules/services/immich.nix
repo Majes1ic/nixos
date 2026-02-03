@@ -9,7 +9,7 @@
 
   custom.services.caddy.virtualHosts."photos.494203.xyz".extraConfig = ''
     @block {
-      not remote_ip 192.168.88.0/24 10.0.1.0/24
+      not remote_ip 192.168.88.0/24 10.0.1.0/24 10.0.88.0/24
     }
     respond @block "Access denied" 403 {
       close
