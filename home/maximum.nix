@@ -47,6 +47,13 @@
           jdk25
         ];
       })
+      (pkgs.heroic.override {
+        extraPkgs =
+          pkgs': with pkgs'; [
+            gamescope
+            gamemode
+          ];
+      })
     ]
     ++ [
 
