@@ -26,6 +26,12 @@
     };
   };
 
+  users.users.calibre-web = {
+    extraGroups = [
+      "media"
+    ];
+  };
+
   custom.services.caddy.virtualHosts."books.494203.xyz".extraConfig = ''
     reverse_proxy http://localhost:9088
   '';
