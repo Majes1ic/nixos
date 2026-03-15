@@ -225,6 +225,7 @@ in
 
           windowrule = [
             "match:class discord, workspace special:social silent"
+            "match:class mumble, workspace special:social silent"
             "match:content 3, workspace name:game silent, center on, fullscreen on"
             "match:class ^(steam_app_.*|hl_linux|hl2_linux)$, workspace name:game silent, center on, fullscreen on"
             #  "workspace special:social silent, title:^(Spotify( Premium)?)$"
