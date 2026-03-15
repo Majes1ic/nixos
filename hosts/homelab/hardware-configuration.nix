@@ -29,7 +29,7 @@
   boot.supportedFilesystems.zfs = true;
 
   boot.zfs.pools.homelab-zpool.devNodes = "/dev/disk/by-label/homelab-zpool";
-  boot.zfs.pools.homelab-zpool-1.devNodes = "/dev/disk/by-label/homelab-zpool-1";
+  boot.zfs.pools.homelab-zpool-1.devNodes = "/dev/disk/by-id";
   boot.zfs.extraPools = [
     "homelab-zpool"
     "homelab-zpool-1"
