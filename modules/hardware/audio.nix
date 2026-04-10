@@ -1,3 +1,4 @@
+{ username, ... }:
 {
   hardware.bluetooth.enable = true;
   # hardware.pulseaudio.enable = lib.mkForce false;
@@ -10,6 +11,8 @@
     wireplumber.enable = true;
   };
 
-  # Reduces latency in some situations
-  security.rtkit.enable = true;
+  # Joshua: rtkit sucks and this allows Hyprland to acquire round robin
+  # scheduling policy.
+  security.rtkit.enable = false;
+  users.users.${username}.extraGroups = [ "pipewire" ];
 }
