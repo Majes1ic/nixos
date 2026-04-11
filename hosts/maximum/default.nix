@@ -100,12 +100,12 @@
   system.stateVersion = "23.05";
 
   #temp beamMP
-  security.pki.certificateFiles = [
-    (pkgs.stdenvNoCC.mkDerivation {
-      name = "beammp-cert";
-      nativeBuildInputs = [ pkgs.curl ];
-      builder = pkgs.writeScript "beammp-cert-builder" "curl -w %{certs} https://auth.beammp.com/userlogin -k > $out";
-      outputHash = "sha256-IjPAWvD57XCoCqJ7cq5/Jr2w4Y17iFW7ws6/xMpDLBU=";
-    })
-  ];
+  #security.pki.certificateFiles = [
+  #  (pkgs.stdenvNoCC.mkDerivation {
+  #    name = "beammp-cert";
+  #    nativeBuildInputs = [ pkgs.curl ];
+  #    builder = pkgs.writeScript "beammp-cert-builder" "curl -w %{certs} https://auth.beammp.com/userlogin -k > $out";
+  #    outputHash = "sha256-IjPAWvD57XCoCqJ7cq5/Jr2w4Y17iFW7ws6/xMpDLBU=";
+  #  })
+  #];
 }
