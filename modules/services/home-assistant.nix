@@ -1,6 +1,6 @@
 {
   services.home-assistant = {
-    enable = true;
+    enable = false;
     extraPackages =
       python3Packages: with python3Packages; [
         # postgresql support
@@ -16,6 +16,10 @@
       # Recommended for fast zlib compression
       # https://www.home-assistant.io/integrations/isal
       "isal"
+      "webostv"
+      "local_file"
+      "local_todo"
+      "Philips Hue"
     ];
     config = {
       homeassistant = {
