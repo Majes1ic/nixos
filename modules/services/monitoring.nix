@@ -1,8 +1,8 @@
 {
   services.prometheus = {
-    enable = true;
+    enable = false;
     exporters.blackbox = {
-      enable = true;
+      enable = false;
       configFile = ./blackbox.yml;
     };
     scrapeConfigs = [
@@ -98,7 +98,7 @@
   };
 
   services.grafana = {
-    enable = true;
+    enable = false;
     settings = {
       server = {
         http_addr = "0.0.0.0";
