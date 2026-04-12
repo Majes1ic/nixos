@@ -8,7 +8,7 @@ let
   mediaDir = "/data/media";
   vpnNamespace = "air-vpn";
   ports = {
-    jellyseer = 5055;
+    seerr = 5055;
     bazarr = 6767;
     radarr = 7878;
     sonarr = 8989;
@@ -17,12 +17,12 @@ let
 in
 {
   #request manager
-  services.jellyseerr = {
+  services.seerr = {
     enable = true;
   };
-  systemd.services.jellyseerr.serviceConfig.SupplementaryGroups = [ "media" ];
+  systemd.services.seerr.serviceConfig.SupplementaryGroups = [ "media" ];
   custom.services.caddy.virtualHosts."jellyseerr.494203.xyz".extraConfig = ''
-    reverse_proxy localhost:${toString ports.jellyseer}
+    reverse_proxy localhost:${toString ports.seerr}
   '';
 
   #collection manager
