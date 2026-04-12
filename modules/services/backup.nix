@@ -4,25 +4,16 @@
       # Automatically create the repository if it doesn't exist
       initialize = true;
 
-      # The local directory where backups will be stored
       repository = "/data/backups";
 
-      # Restic requires a password to encrypt the repository.
-      # Create this file manually using `echo "yourpassword" > /root/restic-password`
       passwordFile = "/root/restic-password";
 
-      # What to backup ("/" means the entire filesystem)
       paths = [
         "/"
       ];
 
-      # What to exclude
       exclude = [
-        # Exclude the backup destination itself (CRITICAL when backing up "/")
         "/data/backups"
-
-        # The specific paths you mentioned
-        # (Adjust these if your typo meant separate folders like "/data" and "/test")
         "/data/media/torrents"
 
         # Standard virtual filesystems that shouldn't be backed up
@@ -33,6 +24,7 @@
         "/tmp"
         "/var/tmp"
         "/var/run"
+        "/nix/store"
       ];
 
       # Additional arguments to pass to the `restic backup` command
