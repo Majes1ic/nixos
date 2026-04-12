@@ -20,7 +20,7 @@
     ../../modules/system/firewall.nix
     #../../modules/system/gnome.nix
     ../../modules/system/hyprland.nix
-    (lib.modules.importApply ../../modules/system/ssh.nix { desktop = false; })
+    (lib.modules.importApply ../../modules/system/ssh.nix { desktop = true; })
     ../../modules/system/virtualisation.nix
 
     ../../modules/programs/audio.nix
