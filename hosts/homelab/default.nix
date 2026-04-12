@@ -10,7 +10,7 @@
     ../../modules/system/virtualisation.nix
     ../../modules/system/ssh.nix
 
-    ../../modules/services/backup.nix
+    #../../modules/services/backup.nix
     ../../modules/services/caddy.nix
     ../../modules/services/jellyfin.nix
     ../../modules/services/immich.nix
