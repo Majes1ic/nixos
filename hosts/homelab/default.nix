@@ -1,3 +1,4 @@
+{ lib, ... }:
 {
   imports = [
     ./hardware-configuration.nix
@@ -8,7 +9,7 @@
 
     ../../modules/system/firewall.nix
     ../../modules/system/virtualisation.nix
-    ../../modules/system/ssh.nix
+    (lib.modules.importApply ../../modules/system/ssh.nix { desktop = false; })
 
     #../../modules/services/backup.nix
     ../../modules/services/caddy.nix

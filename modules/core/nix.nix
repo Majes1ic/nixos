@@ -77,7 +77,9 @@
 
             nh os ${
               if (cmd == "diff") then "build" else cmd
-            } "$flake" --hostname ${hostname} --out-link ~/result-${hostname} "$@"
+            } "$flake" --hostname ${hostname} --out-link ~/result-${hostname} --diff always ${
+              optionalString (cmd != "diff" && cmd != "build") "--show-activation-logs"
+            } "$@"
           '';
         }
       ) rebuildCmds;
@@ -149,7 +151,11 @@
                 ''
               else
                 ''
-                  nh os ${cmd} "$flake" --hostname "$hostname" --out-link "$remote_builds/result-$hostname" --target-host "root@$ip" "''${@:3}"
+                  nh os ${cmd} "$flake" \
+                    --hostname "$hostname" \
+                    --out-link "$remote_builds/result-$hostname" \
+                    --target-host "root@$ip" \
+                    "''${@:3}"
                 ''
             );
         }

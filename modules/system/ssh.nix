@@ -1,3 +1,7 @@
+# joshua: this is terrible and should be replaced with some sort of desktop
+# option for each host. you dont use a custom option namespace though and I cba
+# to implement that now so this will have to do.
+{ desktop }:
 { username, ... }:
 {
   services.openssh = {
@@ -21,7 +25,15 @@
     ];
   };
 
-  programs.ssh.startAgent = true;
+  # Use a graphical agent on desktops and the cli openssh agent on servers
+  services.gnome.gcr-ssh-agent.enable = desktop;
+  programs.ssh = {
+    startAgent = !desktop;
+    agentTimeout = "12h";
+    extraConfig = ''
+      AddKeysToAgent 12h
+    '';
+  };
 
   networking.firewall.interfaces = {
     # wg-discord.allowedTCPPorts = [ 22 ];
