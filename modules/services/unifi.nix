@@ -5,7 +5,6 @@
     openFirewall = true;
     unifiPackage = pkgs.unifi;
     mongodbPackage = pkgs.mongodb-7_0;
-    jrePackage = pkgs.jdk17_headless;
   };
 
   networking.firewall.interfaces."enp43s0".allowedTCPPorts = [ 8443 ];
@@ -26,6 +25,9 @@
         tls
         tls_insecure_skip_verify
       }
+
+      # https://github.com/NixOS/nixpkgs/issues/498025
+      header_up Host {hostport}
     }
   '';
 }
