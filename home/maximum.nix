@@ -29,7 +29,7 @@
       jellyfin-mpv-shim
       #jellyfin-media-player
       lazygit
-      bottles
+      #bottles
       winbox4
       wl-clipboard
       chromium
@@ -38,7 +38,7 @@
       #      teamspeak5_client
       chatterino7
       yazi
-      linux-wallpaperengine
+      #linux-wallpaperengine
       (pkgs.prismlauncher.override {
         jdks = [
           jdk8
@@ -96,16 +96,7 @@
   programs.obs-studio = {
     enable = true;
     plugins = [
-      (pkgs.obs-studio-plugins.obs-pipewire-audio-capture.overrideAttrs {
-        version = "2024-09-04";
-        src = pkgs.fetchFromGitHub {
-          owner = "dimtpap";
-          repo = "obs-pipewire-audio-capture";
-          rev = "c8c57b39fddf01c365f3d1234edc983ee0da1b5b";
-          hash = "sha256-qdwJS4WJxoIg2lIq3aHgBBrQr0Y56X4eZJzOjkwXegE=";
-        };
-        cmakeFlags = [ ];
-      })
+      pkgs.obs-studio-plugins.obs-pipewire-audio-capture
     ];
     package = pkgs.obs-studio.override { config.cudaSupport = true; };
   };
