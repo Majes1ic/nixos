@@ -99,6 +99,9 @@ in
           modShiftCtrl = "${mod}SHIFTCONTROL";
         in
         {
+          #set primary monitor for xWayland games
+          exec-once = [ "${lib.getExe pkgs.xrandr} --output DP-3 --primary" ];
+
           monitor = [
             "HDMI-A-1, 3840x2160@120, 1920x0, 1"
             "DP-2, 2560x1440@75, 0x2160, 1"
