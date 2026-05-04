@@ -4,7 +4,7 @@
     ./hardware-configuration.nix
     ../../modules/core
 
-    ../../modules/hardware/nvidia.nix
+    ../../modules/hardware/nvidia1060.nix
     ../../modules/hardware/networking.nix
 
     ../../modules/system/firewall.nix
