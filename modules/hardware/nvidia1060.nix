@@ -1,4 +1,4 @@
-{ pkgs, config, ... }:
+{ pkgs, ... }:
 {
   hardware.graphics = {
     enable = true;
@@ -11,10 +11,10 @@
   };
 
   hardware.nvidia = {
-    package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
+    branch = "legacy_580";
     # Major issues if this is disabled
     modesetting.enable = true;
-    open = true;
+    open = false;
     nvidiaSettings = false;
   };
   #nixpkgs.config.cudaSupport = true;
