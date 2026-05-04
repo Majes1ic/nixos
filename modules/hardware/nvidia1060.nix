@@ -11,7 +11,7 @@
   };
 
   hardware.nvidia = {
-    package = config.boot.kernelPackages.nvidiaPackages.legacy_470;
+    package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
     # Major issues if this is disabled
     modesetting.enable = true;
     open = true;
