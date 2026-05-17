@@ -54,6 +54,7 @@
             gamemode
           ];
       })
+      halloy
     ]
     ++ [
 
@@ -98,7 +99,7 @@
     plugins = [
       pkgs.obs-studio-plugins.obs-pipewire-audio-capture
     ];
-    package = pkgs.obs-studio.override { config.cudaSupport = true; };
+    package = pkgs.obs-studio.override { cudaSupport = true; };
   };
 
   programs.mpv = {
