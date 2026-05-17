@@ -28,6 +28,8 @@
   # enable zfs support
   boot.supportedFilesystems.zfs = true;
 
+  #force zfs root pool's during early boot
+  boot.zfs.forceImportRoot = false;
   boot.zfs.pools.homelab-zpool.devNodes = "/dev/disk/by-label/homelab-zpool";
   boot.zfs.pools.homelab-zpool-1.devNodes = "/dev/disk/by-id";
   boot.zfs.extraPools = [
