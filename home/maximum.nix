@@ -19,7 +19,6 @@
       vesktop # discord client
       discord
       mumble
-      bitwarden-desktop
       qbittorrent
       qpwgraph # audio piping (patch panel)
       lua
