@@ -24,6 +24,6 @@
 
   boot.supportedFilesystems.zfs = true;
   systemd.services.zfs-mount.enable = false;
-
+  boot.zfs.forceImportRoot = false;
   nixpkgs.hostPlatform = "x86_64-linux";
 }
