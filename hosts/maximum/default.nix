@@ -27,7 +27,7 @@
     ../../modules/programs/steam.nix
 
     #../../modules/services/llama.nix
-    ../../modules/services/sunshine.nix
+    #../../modules/services/sunshine.nix
   ];
 
   custom.virtualisation.graphicalVM = true;
