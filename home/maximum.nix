@@ -72,6 +72,8 @@
   programs.neovim = {
     enable = true;
     defaultEditor = true;
+    withRuby = false;
+    withPython3 = false;
 
     extraPackages = with pkgs; [
       # Runtime dependencies
@@ -80,7 +82,7 @@
       nixd
       nil
       stylua
-      nixfmt-rfc-style
+      nixfmt
       ripgrep
       gnumake
       gcc
@@ -91,6 +93,7 @@
 
   programs.firefox = {
     enable = true;
+    configPath = "${config.xdg.configHome}/mozilla/firefox";
   };
 
   programs.obs-studio = {
@@ -121,5 +124,6 @@
     };
   };
 
+  home.pointerCursor.enable = true;
   home.stateVersion = "23.05";
 }
