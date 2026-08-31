@@ -7,6 +7,7 @@
 }:
 let
   inherit (config.custom.virtualisation) vmVariant;
+  mod = if vmVariant then "ALT" else "SUPER";
 in
 {
   # use package from hyprland flake
@@ -92,149 +93,195 @@ in
       systemd.enable = false; # we use uwsm instead
       package = null;
       portalPackage = null;
-      settings =
-        let
-          mod = if vmVariant then "ALT" else "SUPER";
-          modShift = "${mod}SHIFT";
-          modShiftCtrl = "${mod}SHIFTCONTROL";
-        in
-        {
-          #set primary monitor for xWayland games
-          exec-once = [ "${lib.getExe pkgs.xrandr} --output DP-3 --primary" ];
 
-          monitor = [
-            "HDMI-A-1, 3840x2160@120, 1920x0, 1"
-            "DP-2, 2560x1440@75, 0x2160, 1"
-            "DP-3, 2560x1440@360, 2560x2160, 1"
-          ];
-          input.accel_profile = "flat";
-          cursor.enable_hyprcursor = false;
+      # Hyprland >= 0.55 replaced hyprlang with Lua (hyprland.lua instead of
+      # hyprland.conf). hyprlang still works for a couple more releases, but
+      # new features only land in Lua from here on.
+      # https://hypr.land/news/26_lua/
+      configType = "lua";
 
-          general = {
-            border_size = 2;
-            gaps_out = 10;
-            resize_on_border = true;
-          };
+      # NOTE: I've deliberately NOT used the `settings` attrset here.
+      # home-manager's Nix-attrset -> Lua serializer is still shaking out bugs
+      # around exactly the stuff this config relies on (`$mod`-style strings,
+      # comma-separated positional values) — see
+      # https://github.com/nix-community/home-manager/issues/9468 — so instead
+      # this is hand-written Lua, appended verbatim via extraConfig.
+      #
+      # A handful of dispatcher/effect names below are my best inference from
+      # the wiki rather than a confirmed example (flagged inline with VERIFY).
+      # Run `home-manager switch`, then `hyprctl reload`, and watch for
+      # Hyprland's red error popup — it reports bad dispatcher args at
+      # runtime rather than failing silently.
+      extraConfig = ''
+        local mod = "${mod}"
+        local modShift = mod .. " + SHIFT"
+        local modShiftCtrl = mod .. " + SHIFT + CTRL"
 
-          decoration = {
-            rounding = 10;
-            blur = {
-              enabled = true;
-              special = true;
-              size = 2;
-              passes = 3;
-            };
-          };
+        ------------------
+        ---- MONITORS ----
+        ------------------
+        hl.monitor({ output = "HDMI-A-1", mode = "3840x2160@120", position = "1920x0", scale = 1 })
+        hl.monitor({ output = "DP-2",     mode = "2560x1440@75",  position = "0x2160", scale = 1 })
+        hl.monitor({ output = "DP-3",     mode = "2560x1440@360", position = "2560x2160", scale = 1 })
 
-          #layerrule = [ "blur, launcher" ];
+        -------------------
+        ---- AUTOSTART ----
+        -------------------
+        -- exec-once has no direct keyword anymore; hook the session-start event.
+        -- https://wiki.hypr.land/Configuring/Basics/Autostart/
+        hl.on("hyprland.start", function()
+            hl.exec_cmd("${lib.getExe pkgs.xrandr} --output DP-3 --primary")
+        end)
 
-          animations = {
-            enabled = true;
+        -----------------------
+        ---- LOOK AND FEEL ----
+        -----------------------
+        hl.config({
+            input = {
+                accel_profile = "flat",
+            },
+            -- VERIFY: assuming "cursor" still nests under hl.config() the same
+            -- way it did as a top-level hyprlang category.
+            cursor = {
+                enable_hyprcursor = false,
+            },
+            general = {
+                border_size = 2,
+                gaps_out = 10,
+                resize_on_border = true,
+            },
+            decoration = {
+                rounding = 10,
+                blur = {
+                    enabled = true,
+                    special = true,
+                    size = 2,
+                    passes = 3,
+                },
+            },
+            animations = {
+                enabled = true,
+            },
+        })
 
-            bezier = [
-              "easeInOutQuart,0.76,0,0.24,1"
-              "fluentDecel, 0, 0.2, 0.4, 1"
-              "easeOutCirc, 0, 0.55, 0.45, 1"
-              "easeOutCubic, 0.33, 1, 0.68, 1"
-              "easeinoutsine, 0.37, 0, 0.63, 1"
-              "easeOutQuint, 0.23, 1, 0.32, 1"
-            ];
+        -- Bezier curves (same control points as before, re-expressed as point pairs)
+        hl.curve("easeInOutQuart", { type = "bezier", points = { {0.76, 0}, {0.24, 1} } })
+        hl.curve("fluentDecel",    { type = "bezier", points = { {0, 0.2}, {0.4, 1} } })
+        hl.curve("easeOutCirc",    { type = "bezier", points = { {0, 0.55}, {0.45, 1} } })
+        hl.curve("easeOutCubic",   { type = "bezier", points = { {0.33, 1}, {0.68, 1} } })
+        hl.curve("easeinoutsine",  { type = "bezier", points = { {0.37, 0}, {0.63, 1} } })
+        hl.curve("easeOutQuint",   { type = "bezier", points = { {0.23, 1}, {0.32, 1} } })
 
-            animation = [
-              "windowsIn, 1, 3, easeOutCubic, popin 30%"
-              "windowsOut, 1, 3, fluentDecel, popin 70%"
-              "windowsMove, 1, 4, easeOutQuint"
-              "fadeIn, 1, 3, easeOutCubic"
-              "fadeOut, 1, 1.7, easeOutCubic"
-              "fadeSwitch, 0, 1, easeOutCirc"
-              "fadeDim, 1, 4, fluentDecel"
-              "workspaces, 1, 3, easeOutCubic, slide"
-              "specialWorkspace, 1, 3, easeOutCubic, slidevert"
-              "layers, 1, 4, easeOutQuint"
-            ];
-          };
+        -- VERIFY leaf names ("fadeSwitch"/"fadeDim"/"specialWorkspace") against
+        -- https://wiki.hypr.land/Configuring/Advanced-and-Cool/Animations/
+        hl.animation({ leaf = "windowsIn",        enabled = true,  speed = 3,   bezier = "easeOutCubic", style = "popin 30%" })
+        hl.animation({ leaf = "windowsOut",       enabled = true,  speed = 3,   bezier = "fluentDecel",  style = "popin 70%" })
+        hl.animation({ leaf = "windowsMove",      enabled = true,  speed = 4,   bezier = "easeOutQuint" })
+        hl.animation({ leaf = "fadeIn",           enabled = true,  speed = 3,   bezier = "easeOutCubic" })
+        hl.animation({ leaf = "fadeOut",          enabled = true,  speed = 1.7, bezier = "easeOutCubic" })
+        hl.animation({ leaf = "fadeSwitch",       enabled = false, speed = 1,   bezier = "easeOutCirc" })
+        hl.animation({ leaf = "fadeDim",          enabled = true,  speed = 4,   bezier = "fluentDecel" })
+        hl.animation({ leaf = "workspaces",       enabled = true,  speed = 3,   bezier = "easeOutCubic", style = "slide" })
+        hl.animation({ leaf = "specialWorkspace", enabled = true,  speed = 3,   bezier = "easeOutCubic", style = "slidevert" })
+        hl.animation({ leaf = "layers",           enabled = true,  speed = 4,   bezier = "easeOutQuint" })
 
-          bind = [
-            "${mod}, H, movefocus, l"
-            "${mod}, L, movefocus, r"
-            "${mod}, K, movefocus, u"
-            "${mod}, J, movefocus, d"
-            "${modShift}, J, workspace, m-1"
-            "${modShift}, K, workspace, m+1"
-            "${mod}, mouse:275, workspace, m-1"
-            "${mod}, mouse_down, workspace, e-1"
-            "${mod}, mouse:276, workspace, m+1"
-            "${mod}, mouse_up, workspace, e+1"
-            "${mod}, Left, movewindow, l"
-            "${mod}, Right, movewindow, r"
-            "${mod}, Up, movewindow, u"
-            "${mod}, Down, movewindow, d"
-            "${modShift}, Left, movetoworkspace, r-1"
-            "${modShift}, Right, movetoworkspace, r+1"
+        --------------------------------
+        ---- WORKSPACES / WINDOWRULES --
+        --------------------------------
+        hl.workspace_rule({ workspace = "special:social", gaps_in = 20, gaps_out = 40 })
+        hl.workspace_rule({ workspace = "name:game", monitor = "DP-3" })
 
-            "${mod}, W, killactive"
-            "${mod}, C, togglefloating"
-            "${mod}, F, fullscreen, 1"
-            "${modShift}, F, fullscreen, 0"
-            "${modShiftCtrl}, Q, exec, loginctl terminate-session \"$XDG_SESSION_ID\""
+        hl.window_rule({ match = { class = "discord" }, workspace = "special:social silent" })
+        hl.window_rule({ match = { class = "mumble" },  workspace = "special:social silent" })
 
-            "${mod}, TAB, focusmonitor, +1"
+        -- VERIFY: old rule matched `content 3`; not confirmed whether the Lua
+        -- match table wants the number 3 or a string like "game" here.
+        hl.window_rule({
+            match = { content = 3 },
+            workspace = "name:game silent",
+            center = true,
+            fullscreen = true,
+        })
+        hl.window_rule({
+            match = { class = "^(steam_app_.*|hl_linux|hl2_linux)$" },
+            workspace = "name:game silent",
+            center = true,
+            fullscreen = true,
+        })
 
-            "${mod}, Return, exec, uwsm app Alacritty.desktop"
-            "${mod}SHIFT, Return, workspace, emptym"
-            "${mod}SHIFT, Return, exec, uwsm app Alacritty.desktop"
+        ---------------------
+        ---- KEYBINDINGS ----
+        ---------------------
+        hl.bind(mod .. " + H", hl.dsp.focus({ direction = "left" }))
+        hl.bind(mod .. " + L", hl.dsp.focus({ direction = "right" }))
+        hl.bind(mod .. " + K", hl.dsp.focus({ direction = "up" }))
+        hl.bind(mod .. " + J", hl.dsp.focus({ direction = "down" }))
 
-            "${mod}, Space, exec, uwsm app firefox.desktop"
-            "${mod}SHIFT, Space, workspace, emptym"
-            "${mod}SHIFT, Space, exec, uwsm app firefox.desktop"
+        hl.bind(modShift .. " + J", hl.dsp.focus({ workspace = "m-1" }))
+        hl.bind(modShift .. " + K", hl.dsp.focus({ workspace = "m+1" }))
+        hl.bind(mod .. " + mouse:275", hl.dsp.focus({ workspace = "m-1" }))
+        hl.bind(mod .. " + mouse_down", hl.dsp.focus({ workspace = "e-1" }))
+        hl.bind(mod .. " + mouse:276", hl.dsp.focus({ workspace = "m+1" }))
+        hl.bind(mod .. " + mouse_up", hl.dsp.focus({ workspace = "e+1" }))
 
-            "${mod}, D, togglespecialworkspace, social"
-            "${modShift}, D, movetoworkspacesilent, special:social"
+        -- VERIFY: no documented example for swap-with-neighbour; assuming it's
+        -- the same window.move() dispatcher with `direction` instead of `workspace`.
+        hl.bind(mod .. " + left",  hl.dsp.window.move({ direction = "left" }))
+        hl.bind(mod .. " + right", hl.dsp.window.move({ direction = "right" }))
+        hl.bind(mod .. " + up",    hl.dsp.window.move({ direction = "up" }))
+        hl.bind(mod .. " + down",  hl.dsp.window.move({ direction = "down" }))
+        hl.bind(modShift .. " + left",  hl.dsp.window.move({ workspace = "r-1" }))
+        hl.bind(modShift .. " + right", hl.dsp.window.move({ workspace = "r+1" }))
 
-            "${modShift}, S, exec, hyprshot -m region --clipboard-only"
+        hl.bind(mod .. " + W", hl.dsp.window.close())
+        hl.bind(mod .. " + C", hl.dsp.window.float({ action = "toggle" }))
 
-            "${mod}, G, workspace, name:game"
-            "${modShift}, G, movetoworkspace, name:game"
+        -- VERIFY: old `fullscreen, 1` = maximize, `fullscreen, 0` = real fullscreen.
+        -- Argument name/values for hl.dsp.window.fullscreen() not confirmed.
+        hl.bind(mod .. " + F", hl.dsp.window.fullscreen({ mode = "maximized" }))
+        hl.bind(modShift .. " + F", hl.dsp.window.fullscreen({ mode = "fullscreen" }))
 
-            #"${mod}, ctrl, G,
-          ]
-          ++ lib.flatten (
-            lib.genList (
-              x:
-              let
-                key = toString x;
-                w = toString (if x == 0 then 10 else x);
-              in
-              [
-                "${mod}, ${key}, workspace, ${w}"
-                "${modShift}, ${key}, movetoworkspace, ${w}"
-                "${modShiftCtrl}, ${key}, movetoworkspacesilent, ${w}"
-              ]
-            ) 10
-          );
+        hl.bind(modShiftCtrl .. " + Q", hl.dsp.exec_cmd("loginctl terminate-session \"$XDG_SESSION_ID\""))
 
-          bindr = [ "${mod}, ${mod}_L, exec, pkill fuzzel || fuzzel" ];
+        -- VERIFY: no documented example for relative monitor focus.
+        hl.bind(mod .. " + TAB", hl.dsp.focus({ monitor = "+1" }))
 
-          bindm = [
-            "${mod}, mouse:272, movewindow"
-            "${mod}, mouse:273, resizewindow"
-          ];
+        hl.bind(mod .. " + Return", hl.dsp.exec_cmd("uwsm app Alacritty.desktop"))
+        hl.bind(modShift .. " + Return", hl.dsp.focus({ workspace = "emptym" }))
+        hl.bind(modShift .. " + Return", hl.dsp.exec_cmd("uwsm app Alacritty.desktop"))
 
-          workspace = [
-            "special:social, gapsin:20, gapsout:40"
-            "name:game, monitor:DP-3"
-          ];
+        hl.bind(mod .. " + Space", hl.dsp.exec_cmd("uwsm app firefox.desktop"))
+        hl.bind(modShift .. " + Space", hl.dsp.focus({ workspace = "emptym" }))
+        hl.bind(modShift .. " + Space", hl.dsp.exec_cmd("uwsm app firefox.desktop"))
 
-          windowrule = [
-            "match:class discord, workspace special:social silent"
-            "match:class mumble, workspace special:social silent"
-            "match:content 3, workspace name:game silent, center on, fullscreen on"
-            "match:class ^(steam_app_.*|hl_linux|hl2_linux)$, workspace name:game silent, center on, fullscreen on"
-            #  "workspace special:social silent, title:^(Spotify( Premium)?)$"
-            #  "blur, class:^(fuzzel)$"
-          ];
-        };
+        hl.bind(mod .. " + D", hl.dsp.workspace.toggle_special("social"))
+        -- VERIFY: "silent" as a window.move() option field is inferred from the
+        -- old `movetoworkspacesilent` dispatcher name, not a confirmed field.
+        hl.bind(modShift .. " + D", hl.dsp.window.move({ workspace = "special:social", silent = true }))
 
+        hl.bind(modShift .. " + S", hl.dsp.exec_cmd("hyprshot -m region --clipboard-only"))
+
+        hl.bind(mod .. " + G", hl.dsp.focus({ workspace = "name:game" }))
+        hl.bind(modShift .. " + G", hl.dsp.window.move({ workspace = "name:game" }))
+
+        -- Workspace switching / moving windows to a workspace, mod+[0-9] and
+        -- mod+shift(+ctrl)+[0-9]. A plain Lua loop replaces the lib.genList
+        -- trick this used to need at the Nix level.
+        for i = 0, 9 do
+            local key = tostring(i)
+            local ws = tostring(i == 0 and 10 or i)
+            hl.bind(mod .. " + " .. key, hl.dsp.focus({ workspace = ws }))
+            hl.bind(modShift .. " + " .. key, hl.dsp.window.move({ workspace = ws }))
+            hl.bind(modShiftCtrl .. " + " .. key, hl.dsp.window.move({ workspace = ws, silent = true })) -- VERIFY silent field
+        end
+
+        -- Tap-Super-alone to open/close fuzzel (old `bindr`)
+        hl.bind(mod .. " + " .. mod .. "_L", hl.dsp.exec_cmd("pkill fuzzel || fuzzel"), { release = true })
+
+        -- Move/resize windows by dragging (old `bindm`)
+        hl.bind(mod .. " + mouse:272", hl.dsp.window.drag(), { mouse = true })
+        hl.bind(mod .. " + mouse:273", hl.dsp.window.resize(), { mouse = true })
+      '';
     };
 
     services.hypridle = {
@@ -388,11 +435,11 @@ in
         };
 
         cpu = {
-          format = " {usage}%";
+          format = " {usage}%";
         };
 
         memory = {
-          format = " {percentage}%";
+          format = " {percentage}%";
         };
 
         tray = {
