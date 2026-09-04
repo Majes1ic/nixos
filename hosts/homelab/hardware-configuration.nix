@@ -77,6 +77,11 @@
     };
   };
 
+  systemd.services.wg-quick-wg-discord.serviceConfig = {
+    Restart = "on-failure";
+    RestartSec = 30;
+  };
+
   services.prometheus.exporters.node = {
     enable = true;
     port = 9100;
