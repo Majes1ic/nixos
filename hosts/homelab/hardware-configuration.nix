@@ -3,6 +3,7 @@
 {
   config,
   lib,
+  pkgs,
   modulesPath,
   username,
   ...
@@ -77,9 +78,53 @@
     };
   };
 
-  systemd.services.wg-quick-wg-discord.serviceConfig = {
-    Restart = "on-failure";
-    RestartSec = 30;
+  systemd.services = {
+    # This fixes an issue where the wireguard interface goes inactive if the endpoint
+    # uses DDNS and the IP address changes after the interface went up.
+    wg-quick-reresolve-dns = {
+      description = "wg-quick reresolve DNS endpoints";
+      after = [
+        "network.target"
+        "network-online.target"
+      ];
+      requires = [ "network-online.target" ];
+      startAt = "*-*-* *:0/5:00"; # run every 5 mins
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart =
+          let
+            checkPeer = pkgs.writeShellApplication {
+              name = "wg-quick-check-peer";
+              runtimeInputs = [ pkgs.wireguard-tools ];
+              text = ''
+                # Simplified version of wireguard-tools' reresolve-dns.sh script
+                # SPDX-License-Identifier: GPL-2.0
+                #
+                # Copyright (C) 2015-2020 Jason A. Donenfeld <Jason@zx2c4.com>. All Rights Reserved.
+                INTERFACE="$1"
+                PUBLIC_KEY="$2"
+                ENDPOINT="$3"
+
+                [[ $(wg show "$INTERFACE" latest-handshakes) =~ ''${PUBLIC_KEY//+/\\+}\	([0-9]+) ]] || exit 0
+                (( (EPOCHSECONDS - BASH_REMATCH[1]) > 135 )) || exit 0
+                wg set "$INTERFACE" peer "$PUBLIC_KEY" endpoint "$ENDPOINT"
+                echo "interface=$INTERFACE peer=$PUBLIC_KEY: stale handshake, re-applied endpoint $ENDPOINT"
+              '';
+            };
+          in
+          lib.concatMap (
+            interface:
+            map (
+              peer: ''-${lib.getExe checkPeer} "wg-${interface}" "${peer.publicKey}" "${peer.endpoint}"''
+            ) config.networking.wg-quick.interfaces.${interface}.peers
+          ) (lib.attrNames config.networking.wg-quick.interfaces);
+      };
+    };
+
+    wg-quick-wg-discord.serviceConfig = {
+      Restart = "on-failure";
+      RestartSec = 30;
+    };
   };
 
   services.prometheus.exporters.node = {
