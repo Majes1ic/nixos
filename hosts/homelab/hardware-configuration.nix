@@ -87,7 +87,7 @@
         "network.target"
         "network-online.target"
       ];
-      requires = [ "network-online.target" ];
+      wants = [ "network-online.target" ];
       startAt = "*-*-* *:0/5:00"; # run every 5 mins
       serviceConfig = {
         Type = "oneshot";
@@ -115,7 +115,7 @@
           lib.concatMap (
             interface:
             map (
-              peer: ''-${lib.getExe checkPeer} "wg-${interface}" "${peer.publicKey}" "${peer.endpoint}"''
+              peer: ''-${lib.getExe checkPeer} "${interface}" "${peer.publicKey}" "${peer.endpoint}"''
             ) config.networking.wg-quick.interfaces.${interface}.peers
           ) (lib.attrNames config.networking.wg-quick.interfaces);
       };
