@@ -31,7 +31,10 @@
 
     settings = {
       # enable flakes
-      experimental-features = "nix-command flakes";
+      experimental-features = [
+        "nix-command"
+        "flakes"
+      ];
       # save space by removing duplicate files from the store
       auto-optimise-store = true;
 
