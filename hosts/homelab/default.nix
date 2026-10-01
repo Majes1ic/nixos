@@ -31,6 +31,7 @@
     ../../modules/services/matrix-tuwunel.nix
     ../../modules/services/home-assistant.nix
     ../../modules/services/calendar.nix
+    ../../modules/services/trilium.nix
     #../../modules/services/music.nix
     #../../modules/services/matrix.nix
     #../../modules/services/teamspeak3.nix
