@@ -54,6 +54,7 @@
           ];
       })
       halloy
+      bolt-launcher
     ]
     ++ [
 
