@@ -19,16 +19,16 @@
     ../../modules/services/air-vpn.nix
     ../../modules/services/file-server.nix
     ../../modules/services/calibre.nix
-    ../../modules/services/coop_minesweeper.nix
-    ../../modules/services/mumble-server.nix
+    #../../modules/services/coop_minesweeper.nix
+    #../../modules/services/mumble-server.nix
     ../../modules/services/monitoring.nix
     ../../modules/services/unifi.nix
     ../../modules/services/binary_cache.nix
     ../../modules/services/memos.nix
-    ../../modules/services/minecraftserver.nix
+    #../../modules/services/minecraftserver.nix
     ../../modules/services/uptime-kuma.nix
     ../../modules/services/torrent-stack.nix
-    ../../modules/services/matrix-tuwunel.nix
+    #../../modules/services/matrix-tuwunel.nix
     ../../modules/services/home-assistant.nix
     ../../modules/services/calendar.nix
     ../../modules/services/trilium.nix
