@@ -25,7 +25,7 @@ in
       enable = true;
       package = pkgs.caddy.withPlugins {
         plugins = [ "github.com/caddy-dns/porkbun@v0.3.1" ];
-        hash = "sha256-Nu2vsmjS5Lz6Wh99cGN1FUNX3hymM/sesRyCeDVfrvM=";
+        hash = "sha256-ayBJpLRQtQ7YmTLhMM63ECmvPcQwOPWe6VSCCotPbnA=";
       };
       virtualHosts = mapAttrs (
         _: virtualHost:
