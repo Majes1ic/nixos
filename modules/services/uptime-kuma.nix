@@ -1,4 +1,3 @@
-{ lib, ... }:
 {
   services.uptime-kuma = {
     enable = true;
@@ -7,7 +6,7 @@
     #};
   };
 
-  custom.services.caddy.virtualHosts."uptime.494203.xyz".extraConfig = ''
+  custom.services.caddy.virtualHosts."status.494203.xyz".extraConfig = ''
     reverse_proxy localhost:3001
   '';
 }
