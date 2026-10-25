@@ -120,6 +120,20 @@
           ) (lib.attrNames config.networking.wg-quick.interfaces);
       };
     };
+    zpool-health = {
+      startAt = "*:0/5"; # runs every 5 minutes
+      serviceConfig.Type = "oneshot";
+      path = [
+        pkgs.zfs
+        pkgs.curl
+        pkgs.gnugrep
+      ];
+      script = ''
+        if zpool status -x | grep -q "all pools are healthy"; then
+          curl -fsS -m 10 "https://status.494203.xyz/api/push/3Z63zR0VuAtAmoRXx1ZxWp0iUuX47RR7?status=up&msg=OK&ping="
+        fi
+      '';
+    };
 
     wg-quick-wg-discord.serviceConfig = {
       Restart = "on-failure";
