@@ -61,6 +61,14 @@
   #enables trimming
   services.fstrim.enable = true;
 
+  #enables disk monitoring
+  services.smartd = {
+    enable = true;
+    autodetect = true; # finds all your drives automatically
+    # short test every day at 2am, long test every Saturday at 3am
+    defaults.autodetected = "-a -o on -S on -s (S/../.././02|L/../../6/03)";
+  };
+
   networking.wg-quick.interfaces = {
     wg-discord = {
       address = [ "10.0.0.9/24" ];
@@ -120,6 +128,11 @@
           ) (lib.attrNames config.networking.wg-quick.interfaces);
       };
     };
+    wg-quick-wg-discord.serviceConfig = {
+      Restart = "on-failure";
+      RestartSec = 30;
+    };
+
     zpool-health = {
       startAt = "*:0/5"; # runs every 5 minutes
       serviceConfig.Type = "oneshot";
@@ -135,9 +148,26 @@
       '';
     };
 
-    wg-quick-wg-discord.serviceConfig = {
-      Restart = "on-failure";
-      RestartSec = 30;
+    smart-health = {
+      startAt = "*:0/5";
+      serviceConfig.Type = "oneshot";
+      path = [
+        pkgs.smartmontools
+        pkgs.curl
+        pkgs.gnugrep
+      ];
+      script = ''
+        fail=0
+        for d in $(smartctl --scan | cut -d' ' -f1); do
+          if ! smartctl -H "$d" | grep -qE "PASSED|OK"; then
+            echo "SMART failing: $d"
+            fail=1
+          fi
+        done
+        if [ "$fail" = 0 ]; then
+          curl -fsS -m 10 "https://status.494203.xyz/api/push/WtVRZnI6scoTTAkFKjWsL24CojLqQluE?status=up&msg=OK&ping="
+        fi
+      '';
     };
   };
 
