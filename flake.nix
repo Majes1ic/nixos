@@ -67,6 +67,15 @@
           };
           modules = [ ./hosts/homelab ];
         };
+
+        zbook = nixpkgs.lib.nixosSystem {
+          system = "x86_64-linux";
+          specialArgs = {
+            inherit self inputs username;
+            hostname = "zbook";
+          };
+          modules = [ ./hosts/zbook ];
+        };
       };
 
       packages.x86_64-linux.installer =
