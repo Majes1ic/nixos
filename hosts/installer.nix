@@ -31,5 +31,6 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIHZ6ElOfDAOSAuRKSh8TOGmg9QQFbb1YLz5nRNZYCFqL one"
   ];
 
-  stdenv.hostPlatform.system.stateVersion = "24.05";
+  nixpkgs.hostPlatform = "x86_64-linux";
+  system.stateVersion = "26.05";
 }
