@@ -16,7 +16,6 @@
       kitty
       micro
       xdg-utils # because vs code doesn't work without it
-      vesktop # discord client
       discord
       mumble
       qbittorrent
