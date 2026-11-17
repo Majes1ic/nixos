@@ -8,7 +8,6 @@
 
 {
   inputs,
-  username,
   hostname,
   ...
 }:
