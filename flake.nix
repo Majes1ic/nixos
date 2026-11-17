@@ -80,7 +80,6 @@
 
       packages.x86_64-linux.installer =
         (nixpkgs.lib.nixosSystem {
-          stdenv.hostPlatform.system = "x86_64-linux";
           modules = [ ./hosts/installer.nix ];
         }).config.system.build.isoImage;
 
