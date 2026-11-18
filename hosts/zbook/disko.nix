@@ -15,7 +15,7 @@
   disko.devices.disk.main = {
     type = "disk";
     # Find it on the installer with: ls -l /dev/disk/by-id | grep nvme
-    device = "/dev/disk/by-id/REPLACE-ME";
+    device = "/dev/disk/by-id/nvme-SK_hynix_PC801_HFS001TEJ9X101N_SNC4N494810304B58";
     content = {
       type = "gpt";
       partitions = {
