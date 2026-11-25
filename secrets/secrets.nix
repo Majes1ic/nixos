@@ -10,5 +10,7 @@ in
     homelab
     zbook
   ];
-  "porkbunVars.age".publicKeys = [ homelab ];
+  "porkbunVars.age".publicKeys = [
+    homelab
+  ];
 }
