@@ -9,6 +9,7 @@
   ];
 
   home.packages = with pkgs; [
+    alacritty
     kitty
     discord
     lua
